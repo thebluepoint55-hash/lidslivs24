@@ -554,7 +554,7 @@ export const useStore = create<Store>()(
             if (e.dealId) feed(d, { dealId: e.dealId, kind: 'email', authorId: 'you', text: `Ответ на письмо «${e.subject}»: ${text}` });
             log(d, { object: 'Письмо', objectName: e.subject, event: 'Ответ запланирован' });
           });
-          toast('Ответ поставлен в очередь на понедельник');
+          toast(/понедельник/i.test(text) ? 'Ответ поставлен в очередь на понедельник' : 'Ответ отправлен. Надеемся, клиент его не дочитает');
         },
 
         installApp: (id) => {

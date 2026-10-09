@@ -1,0 +1,195 @@
+/* ---------- Списки: все контакты и компании ---------- */
+
+.lists-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.lists-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 -6px;
+  padding: 6px;
+  border: 0;
+  border-radius: var(--radius);
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+}
+.lists-title:hover,
+.lists-title[aria-expanded='true'] {
+  background: rgba(0, 0, 0, 0.04);
+}
+.lists-title svg {
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+  transition: transform var(--dur) var(--ease-out);
+}
+.lists-title[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+
+.lists-muted {
+  color: var(--muted);
+}
+.lists-hint {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+
+/* массовые действия */
+.lists-bulk {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 16px 24px -4px;
+  padding: 8px 12px;
+  background: #fffbe9;
+  border: 1px solid #f1e1b0;
+  border-radius: var(--radius);
+  font-size: var(--fs-sm);
+  animation: lists-in 160ms var(--ease-out);
+}
+
+/* таблица */
+.lists-table th.lists-check,
+.lists-table td.lists-check {
+  width: 40px;
+  padding: 0 0 0 14px;
+}
+.lists-check input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  vertical-align: middle;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.lists-table tr.is-selected td {
+  background: #eaf3fe;
+}
+.lists-name a {
+  font-weight: 400;
+}
+.lists-name,
+.lists-company {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lists-company a {
+  color: var(--text);
+}
+.lists-company a:hover {
+  color: var(--link);
+}
+.lists-email {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lists-phone {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: #b5bbbf;
+  text-underline-offset: 3px;
+}
+.lists-phone:hover {
+  color: var(--link);
+  text-decoration-color: currentColor;
+}
+.lists-never {
+  color: var(--success);
+}
+
+/* телефон */
+.lists-msearch {
+  display: block;
+  padding: 10px 12px 0;
+}
+.lists-mlist {
+  margin: 10px 0 24px;
+  padding: 0;
+  list-style: none;
+  background: var(--surface);
+  border-top: 1px solid var(--line-soft);
+}
+.lists-mrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 10px 12px 10px 14px;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--text);
+}
+.lists-mrow:hover {
+  text-decoration: none;
+}
+.lists-mrow:active {
+  background: #fafbfc;
+}
+.lists-coavatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e9eef3;
+  color: #50606b;
+}
+.lists-coavatar svg {
+  width: 20px;
+  height: 20px;
+}
+.lists-mrow__main {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.lists-mrow__name {
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lists-mrow__sub {
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lists-mrow__side {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #b9bec1;
+}
+.lists-mrow__side svg {
+  width: 18px;
+  height: 18px;
+}
+.lists-calls {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+@keyframes lists-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}

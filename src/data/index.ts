@@ -1,7 +1,7 @@
 import type { DemoState } from '../store/types';
 import { setBaseNow } from './time';
 
-export const SEED_VERSION = 1;
+export const SEED_VERSION = 2;
 
 /**
  * Собирает свежее состояние демо. Модули с данными импортируются динамически

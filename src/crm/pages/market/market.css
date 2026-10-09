@@ -1,0 +1,958 @@
+/* ---------- СливМаркет (копия amoМаркета) ---------- */
+.mkt {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: var(--surface);
+}
+.mkt-muted {
+  color: var(--muted);
+  font-weight: 400;
+}
+.mkt-empty-text {
+  margin: 0 0 16px;
+}
+
+/* вкладки категорий */
+.mkt-tabs {
+  position: relative;
+  display: flex;
+  gap: 4px;
+  padding: 0 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line-soft);
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: none;
+}
+.mkt-tabs::-webkit-scrollbar {
+  display: none;
+}
+.mkt-tabs__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 46px;
+  padding: 0 12px;
+  border: 0;
+  background: none;
+  color: var(--stage-title);
+  font-size: 14px;
+  white-space: nowrap;
+  transition: color var(--dur);
+}
+.mkt-tabs__item::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 200ms var(--ease-out);
+}
+.mkt-tabs__item:hover {
+  color: var(--text);
+}
+.mkt-tabs__item.is-active {
+  color: var(--text);
+  font-weight: 700;
+}
+.mkt-tabs__item.is-active::after {
+  transform: scaleX(1);
+}
+.mkt-tabs__item:focus-visible {
+  outline-offset: -4px;
+}
+.mkt-tabs__count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: #e9eef3;
+  color: #50606b;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.mkt-body {
+  flex: 1;
+  padding: 20px 24px 96px;
+  max-width: 1180px;
+  width: 100%;
+}
+
+/* ---------- карусель ---------- */
+.mkt-banners {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  margin-bottom: 28px;
+}
+.mkt-banners__track {
+  display: flex;
+  transition: transform 520ms cubic-bezier(0.77, 0, 0.175, 1);
+}
+.mkt-bn {
+  flex: 0 0 100%;
+  min-height: 220px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+  align-items: center;
+  gap: 24px;
+  padding: 32px 72px 40px;
+  overflow: hidden;
+}
+.mkt-bn__title {
+  margin: 0 0 10px;
+  font-size: 30px;
+  line-height: 1.12;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.mkt-bn__title em {
+  font-style: normal;
+}
+.mkt-bn__text {
+  margin: 0 0 18px;
+  font-size: 15px;
+  max-width: 44ch;
+  line-height: 1.45;
+}
+.mkt-bn__cta {
+  height: 38px;
+  padding: 0 18px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-family: var(--font-caption);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: background var(--dur), transform 120ms var(--ease-out);
+}
+.mkt-bn__cta:active {
+  transform: scale(0.97);
+}
+.mkt-bn__art {
+  display: flex;
+  justify-content: center;
+}
+
+.mkt-bn--navy {
+  background: var(--sidebar);
+  color: #dfe8f1;
+}
+.mkt-bn--navy .mkt-bn__title {
+  color: #fff;
+}
+.mkt-bn--navy .mkt-bn__title em {
+  color: #ff8a6b;
+}
+.mkt-bn--navy .mkt-bn__cta {
+  background: var(--anti);
+  color: #fff;
+}
+.mkt-bn--navy .mkt-bn__cta:hover {
+  background: var(--anti-hover);
+}
+
+.mkt-bn--ice {
+  background: #dcecfd;
+  color: #2b4a66;
+}
+.mkt-bn--ice .mkt-bn__title {
+  color: #0f2742;
+}
+.mkt-bn--ice .mkt-bn__title em {
+  color: var(--accent);
+}
+.mkt-bn--ice .mkt-bn__cta {
+  background: var(--accent);
+  border-color: var(--accent-border);
+  color: #fff;
+}
+.mkt-bn--ice .mkt-bn__cta:hover {
+  background: var(--accent-hover);
+}
+
+.mkt-bn--coral {
+  background: var(--anti);
+  color: #fff3ee;
+}
+.mkt-bn--coral .mkt-bn__title {
+  color: #fff;
+}
+.mkt-bn--coral .mkt-bn__title em {
+  color: #3a1206;
+}
+.mkt-bn--coral .mkt-bn__cta {
+  background: #fff;
+  color: #c83f1d;
+}
+.mkt-bn--coral .mkt-bn__cta:hover {
+  background: #fff3ee;
+}
+
+/* композиция «чат без ответа» */
+.mkt-bn-chat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  max-width: 270px;
+}
+.mkt-bn-chat__msg {
+  padding: 8px 12px;
+  border-radius: 12px 12px 12px 3px;
+  background: #fff;
+  color: var(--text);
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+.mkt-bn-chat__msg:nth-child(2) {
+  margin-left: 18px;
+}
+.mkt-bn-chat__msg:nth-child(3) {
+  margin-left: 36px;
+}
+.mkt-bn-chat__ticks {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #6fb6ff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* композиция «−18 °C» */
+.mkt-bn-temp {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  color: #0f2742;
+  line-height: 0.85;
+}
+.mkt-bn-temp svg {
+  position: absolute;
+  top: -8px;
+  left: -30px;
+  color: var(--accent);
+}
+.mkt-bn-temp__num {
+  font-size: 112px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.mkt-bn-temp__unit {
+  margin-top: 8px;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* композиция «календарь переносов» */
+.mkt-bn-cal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-caption);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.mkt-bn-cal__day {
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  background: #fff;
+  color: #c83f1d;
+  font-size: 18px;
+  box-shadow: 0 3px 10px rgba(80, 20, 0, 0.18);
+}
+.mkt-bn-cal__day.is-past {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  box-shadow: none;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+.mkt-bn-cal__day.is-next {
+  margin-left: 22px;
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+.mkt-banners__arrow {
+  position: absolute;
+  top: 50%;
+  width: 36px;
+  height: 36px;
+  margin-top: -18px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(19, 48, 79, 0.2);
+  opacity: 0.85;
+  transition: opacity var(--dur), transform 120ms var(--ease-out);
+}
+.mkt-banners__arrow:hover {
+  opacity: 1;
+}
+.mkt-banners__arrow:active {
+  transform: scale(0.94);
+}
+.mkt-banners__arrow.is-prev {
+  left: 16px;
+}
+.mkt-banners__arrow.is-next {
+  right: 16px;
+}
+.mkt-banners__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.mkt-banners__dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: rgba(127, 140, 150, 0.45);
+  transition: width 240ms var(--ease-out), background var(--dur);
+}
+.mkt-banners__dots button.is-on {
+  width: 22px;
+  background: rgba(127, 140, 150, 0.95);
+}
+
+/* ---------- секции и плитки ---------- */
+.mkt-section {
+  margin-bottom: 32px;
+}
+.mkt-section__title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin: 0 0 14px;
+  font-size: var(--fs-lg);
+  font-weight: 700;
+}
+.mkt-section__all {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--link);
+  font-size: 14px;
+  font-weight: 400;
+}
+.mkt-section__all:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.mkt-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.mkt-tile {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  padding: 20px 18px 18px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+  transition: border-color var(--dur), box-shadow var(--dur);
+}
+.mkt-tile:hover {
+  border-color: #cfd6dc;
+  box-shadow: 0 4px 14px rgba(19, 48, 79, 0.08);
+}
+.mkt-tile:focus-within {
+  border-color: #b9c6d3;
+}
+.mkt-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+.mkt-tile__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.mkt-tile__name {
+  margin: 0 28px 4px 0;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  line-height: 1.25;
+}
+.mkt-tile__open {
+  border: 0;
+  background: none;
+  padding: 0;
+  text-align: left;
+  color: var(--text);
+  font-weight: 700;
+}
+/* вся плитка кликабельна, кнопка установки — поверх */
+.mkt-tile__open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.mkt-tile__open:hover {
+  color: var(--link);
+}
+.mkt-tile__open:focus-visible {
+  outline: none;
+}
+.mkt-tile__open:focus-visible::after {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: var(--radius);
+}
+.mkt-tile__rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+.mkt-tile__short {
+  margin: 8px 0 14px;
+  color: var(--stage-title);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.mkt-tile__foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+}
+.mkt-install-btn,
+.mkt-installed-btn {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.mkt-install-btn {
+  border: 1px solid var(--accent);
+  background: var(--surface);
+  color: var(--accent);
+  font-weight: 700;
+  transition: background var(--dur), color var(--dur), transform 120ms var(--ease-out);
+}
+.mkt-install-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+.mkt-install-btn:active {
+  transform: scale(0.97);
+}
+.mkt-installed-btn {
+  border: 1px solid var(--line-soft);
+  color: var(--stage-title);
+  background: #f7f8f9;
+}
+
+.mkt-stars {
+  display: inline-flex;
+  gap: 1px;
+  color: #d6dadd;
+}
+.mkt-stars svg {
+  fill: currentColor;
+  stroke: none;
+}
+.mkt-stars svg.is-on {
+  color: #f5b301;
+}
+
+.mkt-demo {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 10px;
+  background: var(--success-soft);
+  color: #1e7d47;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+/* диагональная лента-бейдж в углу */
+.mkt-ribbon {
+  position: absolute;
+  top: 16px;
+  right: -36px;
+  z-index: 2;
+  width: 132px;
+  padding: 3px 0;
+  transform: rotate(45deg);
+  font-family: var(--font-caption);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+.mkt-ribbon--hit {
+  background: var(--anti);
+}
+.mkt-ribbon--new {
+  background: var(--accent);
+}
+.mkt-ribbon--beta {
+  background: #7f6bc8;
+}
+
+.mkt-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 3px;
+  font-family: var(--font-caption);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #fff;
+}
+.mkt-chip--hit {
+  background: var(--anti);
+}
+.mkt-chip--new {
+  background: var(--accent);
+}
+.mkt-chip--beta {
+  background: #7f6bc8;
+}
+
+.mkt-note {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 16px;
+  padding: 16px 18px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--stage-title);
+}
+.mkt-note svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--muted);
+}
+.mkt-note p {
+  margin: 0;
+  line-height: 1.5;
+}
+.mkt-note strong {
+  color: var(--text);
+}
+
+/* ---------- установленные ---------- */
+.mkt-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+}
+.mkt-row {
+  display: grid;
+  grid-template-columns: 48px minmax(160px, 1.4fr) auto minmax(120px, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  transition: background var(--dur);
+}
+.mkt-row:last-child {
+  border-bottom: 0;
+}
+.mkt-row:hover {
+  background: var(--hover-row);
+}
+.mkt-row__main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: var(--fs-sm);
+}
+.mkt-row__name {
+  border: 0;
+  background: none;
+  padding: 0;
+  text-align: left;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text);
+}
+.mkt-row__name:hover {
+  color: var(--link);
+}
+.mkt-row__dev {
+  color: var(--stage-title);
+  font-size: var(--fs-sm);
+}
+.mkt-lime {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 3px;
+  background: var(--lime);
+  color: #3a4a07;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+/* ---------- окно приложения ---------- */
+.mkt-app {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 28px;
+}
+.mkt-app__side {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 24px;
+  border-right: 1px solid var(--line-soft);
+}
+.mkt-app__logo {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.mkt-app__name {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.2;
+}
+.mkt-app__dev,
+.mkt-app__installs {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+.mkt-app__rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+.mkt-app__short {
+  margin: 4px 0;
+  line-height: 1.45;
+}
+.mkt-app__status {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+.mkt-app__h {
+  margin: 0 0 10px;
+  color: var(--stage-title);
+}
+.mkt-app__h:not(:first-child) {
+  margin-top: 26px;
+}
+.mkt-app__desc p {
+  margin: 0 0 10px;
+  line-height: 1.5;
+  max-width: 68ch;
+}
+
+.mkt-steps {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.mkt-steps li {
+  display: flex;
+  gap: 10px;
+  line-height: 1.45;
+}
+.mkt-steps__n {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #e9f1fd;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: center;
+}
+.mkt-field {
+  display: grid;
+  gap: 5px;
+  max-width: 340px;
+}
+.mkt-field__label {
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+.mkt-field__hint {
+  font-size: 12px;
+  color: var(--muted);
+}
+.mkt-field .select:disabled {
+  background: #f7f8f9;
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.mkt-reviews {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+.mkt-review {
+  display: flex;
+  gap: 10px;
+}
+.mkt-review__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.mkt-review p {
+  margin: 3px 0 0;
+  line-height: 1.45;
+  color: var(--stage-title);
+}
+
+/* ---------- согласование и эффект установки ---------- */
+.mkt-approve__lead {
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+.mkt-approve {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+}
+.mkt-approve__row {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  grid-template-areas: 'av who' 'av status';
+  column-gap: 12px;
+  row-gap: 4px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line-soft);
+  transition: background 240ms var(--ease-out);
+}
+.mkt-approve__row:last-child {
+  border-bottom: 0;
+}
+.mkt-approve__row > .avatar {
+  grid-area: av;
+}
+.mkt-approve__who {
+  grid-area: who;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+}
+.mkt-approve__who span {
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+.mkt-approve__status {
+  grid-area: status;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  line-height: 1.35;
+}
+.mkt-approve__status svg {
+  flex: none;
+  margin-top: 1px;
+}
+.mkt-approve__row.is-busy {
+  background: #fffbea;
+}
+.mkt-approve__row.is-busy .mkt-approve__status {
+  color: #8a6400;
+}
+.mkt-approve__row.is-done .mkt-approve__status {
+  color: #1e7d47;
+}
+.mkt-approve__final {
+  margin: 14px 0 0;
+  color: var(--stage-title);
+  line-height: 1.5;
+}
+.mkt-spin {
+  animation: mkt-spin 900ms linear infinite;
+}
+@keyframes mkt-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.mkt-effect {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.mkt-effect p {
+  margin: 4px 0 0;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+/* ---------- адаптив ---------- */
+@media (max-width: 1100px) {
+  .mkt-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .mkt-row {
+    grid-template-columns: 48px minmax(0, 1fr) auto auto;
+  }
+  .mkt-row__dev {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .mkt-tabs {
+    padding: 0 8px;
+  }
+  .mkt-tabs__item {
+    height: 42px;
+    font-size: 13px;
+  }
+  .mkt-body {
+    padding: 14px 12px 96px;
+  }
+  .mkt-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+  .mkt-bn {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+    padding: 22px 20px 40px;
+    gap: 14px;
+  }
+  .mkt-bn__title {
+    font-size: 22px;
+  }
+  .mkt-bn__art {
+    display: none;
+  }
+  .mkt-banners__arrow {
+    display: none;
+  }
+  .mkt-row {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 8px 12px;
+  }
+  .mkt-row .mkt-lime {
+    grid-column: 2;
+  }
+  .mkt-row .btn {
+    grid-column: 2;
+    justify-self: start;
+  }
+  .mkt-app {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .mkt-app__side {
+    padding: 0 0 18px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  /* окно приложения — шторка на весь экран */
+  .modal--wide:has(.mkt-app) {
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+  }
+  .modal--wide:has(.mkt-app) .modal__head {
+    border-radius: 0;
+  }
+  .modal--wide:has(.mkt-app) .modal__body {
+    flex: 1;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mkt-banners__track {
+    transition: none;
+  }
+}

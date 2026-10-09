@@ -1,0 +1,132 @@
+/* ---------- «Ещё» (вкладка мобильного приложения) ---------- */
+.more {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.more-body {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 20px 16px 96px;
+}
+.more-me {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  color: var(--text);
+  text-decoration: none;
+  transition: background var(--dur);
+}
+.more-me:hover {
+  background: var(--hover-row);
+  text-decoration: none;
+}
+.more-me__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.more-me__text strong {
+  font-size: 17px;
+}
+.more-me__text span {
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+
+.more-group {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.more-group li + li {
+  border-top: 1px solid #f0f1f2;
+}
+.more-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 14px 0 16px;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font-size: 16px;
+  text-align: left;
+  text-decoration: none;
+  transition: background var(--dur);
+}
+.more-item:hover {
+  background: var(--hover-row);
+  text-decoration: none;
+}
+.more-item:active {
+  background: #e6eff9;
+}
+.more-item:focus-visible {
+  outline-offset: -2px;
+}
+.more-item__icon {
+  display: inline-flex;
+  color: #5d7488;
+}
+.more-item__label {
+  flex: 1;
+}
+.more-item__note {
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+.more-item__chev {
+  color: #b7bec3;
+  flex: none;
+}
+.more-item--danger,
+.more-item--danger .more-item__icon {
+  color: var(--danger);
+}
+.more-badge {
+  display: inline-block;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+}
+.more-note {
+  margin: 8px 0 0;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: #fff7e0;
+  border: 1px solid #f1e1b0;
+  color: #7a5b12;
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+}
+.more-confirm {
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 767px) {
+  .more-body {
+    padding: 12px 10px 96px;
+  }
+}

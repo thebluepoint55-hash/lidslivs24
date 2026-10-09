@@ -95,12 +95,12 @@ export const settings: Settings = {
 };
 
 export const goals: Goal[] = [
-  { managerId: 'm-perezvonov', plan: 60 },
-  { managerId: 'm-zavtrakova', plan: 50 },
-  { managerId: 'm-perekurov', plan: 45 },
-  { managerId: 'm-nedozvonova', plan: 45 },
-  { managerId: 'm-soglasuev', plan: 40 },
-  { managerId: 'you', plan: 10 },
+  { managerId: 'm-perezvonov', plan: 5 },
+  { managerId: 'm-zavtrakova', plan: 4 },
+  { managerId: 'm-perekurov', plan: 4 },
+  { managerId: 'm-nedozvonova', plan: 6 },
+  { managerId: 'm-soglasuev', plan: 3 },
+  { managerId: 'you', plan: 3 },
 ];
 
 export const achievements: Achievement[] = [
