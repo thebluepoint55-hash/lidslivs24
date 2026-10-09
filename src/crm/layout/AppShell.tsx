@@ -89,7 +89,7 @@ export default function AppShell() {
       <div className="shell__main">
         <div className="demobar" role="note">
           <span>
-            <strong>Демо-доступ: бессрочно.</strong> Продлить нельзя, отменить тоже.
+            <strong>Демо-доступ: бессрочно.</strong> Продлить нельзя, отменить тоже. Ваши сливы живут до закрытия вкладки.
           </span>
           <span className="demobar__spacer" />
           <button onClick={() => window.confirm('Сбросить демо? Все ваши сливы пропадут, лиды снова захотят купить.') && resetDemo()}>

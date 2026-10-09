@@ -219,7 +219,7 @@ function DealView({ deal, demo }: { deal: Deal; demo: DemoState }) {
         <Field label="Вероятность покупки">
           <span className={`chance chance--${chanceTone}`}>
             <span className="chance__bar">
-              <span style={{ width: `${deal.buyChance}%` }} />
+              <span style={{ transform: `scaleX(${deal.buyChance / 100})` }} />
             </span>
             <span className="tabular">{deal.buyChance}%</span>
             <small>{chanceTone === 'bad' ? 'опасно' : chanceTone === 'mid' ? 'терпимо' : 'отлично'}</small>
@@ -504,7 +504,7 @@ function DealView({ deal, demo }: { deal: Deal; demo: DemoState }) {
           </div>
           <div className={`chance chance--${chanceTone} chance--big`}>
             <span className="chance__bar">
-              <span style={{ width: `${deal.buyChance}%` }} />
+              <span style={{ transform: `scaleX(${deal.buyChance / 100})` }} />
             </span>
             <span className="tabular">{deal.buyChance}%</span>
           </div>

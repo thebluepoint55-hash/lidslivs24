@@ -172,7 +172,7 @@ function GoalRow({
       </div>
       <div className="stats-goal__bar">
         <div className="stats-goal__track">
-          <div className="stats-goal__fill" style={{ width: `${Math.min(100, share)}%` }} />
+          <div className="stats-goal__fill" style={{ transform: `scaleX(${Math.min(100, share) / 100})` }} />
         </div>
         <div className="stats-goal__meta">
           <span className="stats-goal__status">

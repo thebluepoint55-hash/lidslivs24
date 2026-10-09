@@ -10,6 +10,36 @@
 .tasks-red {
   color: var(--danger);
 }
+
+/* ---------- перетаскивание задач ---------- */
+.tasks-card.is-draggable {
+  cursor: grab;
+}
+.tasks-card.is-dragging,
+.tasks-chip.is-dragging {
+  opacity: 0.35;
+  border-style: dashed;
+  box-shadow: none;
+}
+.tasks-col {
+  transition: background var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.tasks-board.is-dragging .tasks-col {
+  border-radius: var(--radius);
+}
+.tasks-col.is-over {
+  background: rgba(47, 128, 237, 0.07);
+  box-shadow: inset 0 0 0 1px rgba(47, 128, 237, 0.35);
+}
+.tasks-month__cell.is-over,
+.tasks-week__col.is-over,
+.tasks-day__slot.is-over {
+  background: rgba(47, 128, 237, 0.1) !important;
+  box-shadow: inset 0 0 0 1px rgba(47, 128, 237, 0.45);
+}
+.tasks-chip:not(.is-done) {
+  cursor: grab;
+}
 .tasks-muted {
   color: var(--muted);
 }
@@ -101,15 +131,20 @@
 .tasks-board {
   flex: 1;
   min-height: 0;
-  display: flex;
-  align-items: flex-start;
+  /* сетка, а не flex: все колонки тянутся до высоты самой длинной,
+     поэтому задачу можно бросить в любое место колонки */
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: var(--col-w);
+  align-items: stretch;
+  align-content: start;
+  justify-content: start;
   gap: 16px;
   padding: 0 24px 24px;
   overflow: auto;
 }
 .tasks-col {
-  flex: none;
-  width: var(--col-w);
+  min-width: 0;
 }
 .tasks-col__head {
   position: sticky;
@@ -143,8 +178,11 @@
 }
 .tasks-col__body {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
   gap: 8px;
   padding-top: 10px;
+  padding-bottom: var(--fab-clear, 76px);
 }
 .tasks-col__empty {
   margin: 0;

@@ -86,15 +86,17 @@
 .tour-dots {
   display: inline-flex;
   gap: 4px;
+  margin-left: auto;
+}
+.tour-card--final .tour-dots {
+  margin: 0 auto;
 }
 .tour-dots i {
   width: 6px;
   height: 6px;
   border-radius: 3px;
   background: #dde1e4;
-  transition:
-    width 260ms var(--ease-out),
-    background 200ms;
+  transition: background 200ms;
 }
 .tour-dots i.is-past {
   background: #a9c7f2;

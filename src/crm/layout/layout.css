@@ -190,6 +190,15 @@
   color: #ffb39f;
 }
 
+/* ---------- место под кнопку «Отмаз» ----------
+   Последние строки прокручиваемых областей не должны оставаться под плавающей кнопкой */
+:root {
+  --fab-clear: 76px;
+}
+.table-wrap {
+  margin-bottom: var(--fab-clear);
+}
+
 /* ---------- нижняя панель вкладок (телефон) ---------- */
 .tabbar {
   display: none;
@@ -203,7 +212,7 @@
     display: none;
   }
   .shell__content {
-    padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+    padding-bottom: calc(var(--tabbar-h) + var(--fab-clear) + env(safe-area-inset-bottom));
   }
   .otmaz-fab {
     position: fixed;

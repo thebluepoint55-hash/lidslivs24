@@ -224,7 +224,7 @@ function EntityView({ demo, contact, company }: { demo: DemoState; contact?: Con
         </div>
         <div className={`chance chance--${avgChance >= 70 ? 'bad' : avgChance >= 35 ? 'mid' : 'good'} chance--big`}>
           <span className="chance__bar">
-            <span style={{ width: `${avgChance}%` }} />
+            <span style={{ transform: `scaleX(${avgChance / 100})` }} />
           </span>
           <span className="tabular">{avgChance}%</span>
         </div>

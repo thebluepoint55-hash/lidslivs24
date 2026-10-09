@@ -42,25 +42,35 @@ export function nextHoliday(from = new Date()): { date: Date; name: string } {
 
 const coolDown: Record<Temperature, Temperature> = { hot: 'warm', warm: 'cold', cold: 'ice', ice: 'ice' };
 
-// Безопасное хранилище: в приватном режиме localStorage может бросать исключения
+// Демо живёт в рамках одной вкладки: sessionStorage переживает перезагрузку страницы,
+// но очищается при закрытии вкладки. Каждое новое открытие начинается с исходных данных.
+// Обёртка безопасна: в приватном режиме хранилище может бросать исключения.
+const LEGACY_KEY = 'lidslivs24-demo';
+try {
+  // старые версии хранили демо в localStorage — подчищаем, чтобы оно не возвращалось
+  localStorage.removeItem(LEGACY_KEY);
+} catch {
+  /* ignore */
+}
+
 const safeStorage: StateStorage = {
   getItem: (k) => {
     try {
-      return localStorage.getItem(k);
+      return sessionStorage.getItem(k);
     } catch {
       return null;
     }
   },
   setItem: (k, v) => {
     try {
-      localStorage.setItem(k, v);
+      sessionStorage.setItem(k, v);
     } catch {
       /* демо продолжит работать без сохранения */
     }
   },
   removeItem: (k) => {
     try {
-      localStorage.removeItem(k);
+      sessionStorage.removeItem(k);
     } catch {
       /* ignore */
     }
@@ -114,6 +124,8 @@ export interface Store {
   // задачи
   addTask: (p: { dealId?: ID; type: TaskType; text: string; due: string }) => void;
   postponeTask: (id: ID, days?: number) => void;
+  /** перетаскивание задачи: новый срок и шутливый тост */
+  moveTask: (id: ID, due: string, message: string) => void;
   postponeAllTasks: () => number;
   completeTask: (id: ID, result: string) => void;
 
@@ -477,6 +489,28 @@ export const useStore = create<Store>()(
             }
           });
           toast('Задача перенесена. Так держать', 'success');
+        },
+
+        moveTask: (id, due, message) => {
+          let moved = false;
+          mutate((d) => {
+            const t = d.tasks.find((x) => x.id === id);
+            if (!t || t.done || new Date(t.due).toDateString() === new Date(due).toDateString()) return;
+            const before = fmtDay(t.due);
+            const later = new Date(due).getTime() > new Date(t.due).getTime();
+            t.due = due;
+            moved = true;
+            if (later) {
+              t.postpones += 1;
+              d.stats.postponed += 1;
+              if (t.dealId) {
+                const deal = findDeal(d, t.dealId);
+                if (deal) deal.postpones += 1;
+              }
+            }
+            log(d, { object: 'Задача', objectName: t.text, event: 'Срок изменён', before, after: fmtDay(due) });
+          });
+          if (moved) toast(message, 'success');
         },
 
         postponeAllTasks: () => {

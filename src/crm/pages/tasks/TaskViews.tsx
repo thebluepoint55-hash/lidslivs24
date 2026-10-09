@@ -17,14 +17,29 @@ export function Postpones({ n }: { n: number }) {
 
 // ---------- карточка задачи в канбане ----------
 
-export function TaskCard({ task, onComplete, onOpen }: { task: Task; onComplete: (t: Task) => void; onOpen: (t: Task) => void }) {
+export function TaskCard({
+  task,
+  onComplete,
+  onOpen,
+  dragging,
+  onPointerDown,
+}: {
+  task: Task;
+  onComplete: (t: Task) => void;
+  onOpen: (t: Task) => void;
+  dragging?: boolean;
+  onPointerDown?: (e: PointerEvent<HTMLElement>) => void;
+}) {
   const demo = useDemo();
   const postponeTask = useStore((s) => s.postponeTask);
   const { deal, contact, company } = taskCtx(demo, task);
   const overdue = isOverdue(task);
 
   return (
-    <article className={`tasks-card${task.done ? ' is-done' : ''}`}>
+    <article
+      className={`tasks-card${task.done ? ' is-done' : ''}${dragging ? ' is-dragging' : ''}${onPointerDown && !task.done ? ' is-draggable' : ''}`}
+      onPointerDown={task.done ? undefined : onPointerDown}
+    >
       <div className="tasks-card__top">
         <span className={`tasks-card__date${overdue ? ' tasks-red' : ''}`}>{dayLabel(task.due)}</span>
         <span className="tasks-card__for">
@@ -55,7 +70,7 @@ export function TaskCard({ task, onComplete, onOpen }: { task: Task; onComplete:
         <div className="tasks-card__foot">
           <Postpones n={task.postpones} />
           {!task.done && (
-            <div className="tasks-card__actions">
+            <div className="tasks-card__actions" data-no-drag>
               <button type="button" className="tasks-qa" onClick={() => postponeTask(task.id)}>
                 <CalendarClock aria-hidden="true" />
                 Перенести

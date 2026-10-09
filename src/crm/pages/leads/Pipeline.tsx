@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Lock, MoreHorizontal, Plus, Search, Trash2, X } from 'lucide-react';
 import { displayBudget, displayTemperature, pipelineStages, useDemo, useStore } from '../../../store/store';
 import { toast } from '../../../store/ui';
 import type { Deal, ID, Stage } from '../../../store/types';
-import { Button, Menu, Modal, PageHeader, fmtRelDay, money, plural, useIsMobile } from '../../ui';
+import { Button, Menu, Modal, PageHeader, fmtRelDay, money, plural, useBoardDrag, useIsMobile } from '../../ui';
 import {
   AMO_PALETTE,
   JokeLine,
@@ -42,9 +42,8 @@ export default function Pipeline() {
   const [slitAllOpen, setSlitAllOpen] = useState(false);
   const [moveId, setMoveId] = useState<ID | null>(null);
   const [expanded, setExpanded] = useState<Set<ID>>(() => new Set());
-  const [dragId, setDragId] = useState<ID | null>(null);
-  const [over, setOver] = useState<ID | null>(null);
   const [landed, setLanded] = useState<ID | null>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
   const { request, modals } = useStageMove();
 
   const taskStates = useMemo(() => buildTaskStates(demo.tasks), [demo.tasks]);
@@ -73,51 +72,26 @@ export default function Pipeline() {
     return () => window.clearTimeout(t);
   }, [landed]);
 
-  // ---------- перетаскивание ----------
+  // ---------- перетаскивание мышью (как в amo) ----------
+  // цели: колонка этапа (data-drop = id этапа), зоны внизу экрана («z-<id>», «__delete»)
 
-  const onCardDragStart = (e: DragEvent<HTMLDivElement>, id: ID) => {
-    e.dataTransfer.setData('text/plain', id);
-    e.dataTransfer.effectAllowed = 'move';
-    // «приподнятая» карточка вместо стандартного полупрозрачного призрака
-    const src = e.currentTarget;
-    const rect = src.getBoundingClientRect();
-    const card = src.cloneNode(true) as HTMLElement;
-    card.style.width = `${rect.width}px`;
-    // обёртка с отступом, чтобы тень и наклон не обрезались в снимке
-    const ghost = document.createElement('div');
-    ghost.className = 'drag-ghost';
-    ghost.appendChild(card);
-    document.body.appendChild(ghost);
-    e.dataTransfer.setDragImage(ghost, e.clientX - rect.left + 14, e.clientY - rect.top + 14);
-    window.setTimeout(() => ghost.remove(), 0);
-    window.setTimeout(() => setDragId(id), 0);
-  };
-  const endDrag = () => {
-    setDragId(null);
-    setOver(null);
-  };
-  const dropTo = (e: DragEvent, stageId: ID) => {
-    e.preventDefault();
-    const id = e.dataTransfer.getData('text/plain') || dragId;
-    endDrag();
-    if (!id) return;
-    const target = demo.stages.find((s) => s.id === stageId);
-    const moved = demo.deals.find((d) => d.id === id)?.stageId !== stageId;
-    request(id, stageId);
-    if (moved && target?.kind === 'open') setLanded(id);
-  };
-  const colDnD = (stageId: ID) => ({
-    onDragOver: (e: DragEvent) => {
-      if (!dragId) return;
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      if (over !== stageId) setOver(stageId);
+  const { dragId, over: overKey, bind } = useBoardDrag({
+    disabled: isMobile || edit,
+    scrollRef: boardRef,
+    onDrop: (id, target) => {
+      if (target === '__delete') {
+        toast('Удалять сделки нельзя: по ним считается конверсия в отказ');
+        return;
+      }
+      const stageId = target.startsWith('z-') ? target.slice(2) : target;
+      const stage = demo.stages.find((s) => s.id === stageId);
+      const moved = demo.deals.find((d) => d.id === id)?.stageId !== stageId;
+      if (!stage || !moved) return;
+      request(id, stageId);
+      if (stage.kind === 'open') setLanded(id);
     },
-    onDragLeave: (e: DragEvent) => {
-      if (!(e.currentTarget as HTMLElement).contains(e.relatedTarget as Node)) setOver((o) => (o === stageId ? null : o));
-    },
-    onDrop: (e: DragEvent) => dropTo(e, stageId),
   });
+  const over = overKey;
 
   const openDeal = (id: ID) => navigate(`/app/leads/${id}`);
 
@@ -132,8 +106,7 @@ export default function Pipeline() {
     landed: landed === d.id,
     onOpen: () => openDeal(d.id),
     onMenu: () => setMoveId(d.id),
-    onDragStart: (e: DragEvent<HTMLDivElement>) => onCardDragStart(e, d.id),
-    onDragEnd: endDrag,
+    onPointerDown: bind(d.id).onPointerDown,
     mobile: isMobile,
   });
 
@@ -263,7 +236,7 @@ export default function Pipeline() {
           edit={edit}
         />
       ) : (
-        <div className={`pipe${dragId ? ' is-dragging' : ''}`}>
+        <div className={`pipe${dragId ? ' is-dragging' : ''}`} ref={boardRef}>
           {stages.map((s) => {
             const list = byStage.get(s.id) ?? [];
             const sum = list.reduce((a, d) => a + displayBudget(demo, d), 0);
@@ -284,7 +257,7 @@ export default function Pipeline() {
                   style={{ ['--stage' as string]: s.color }}
                   onClick={toggle}
                   title={`${s.name}: ${list.length} ${dealsWord(list.length)}. Нажмите, чтобы развернуть`}
-                  {...colDnD(s.id)}
+                  data-drop={s.id}
                 >
                   <span className="col__count tabular">{list.length}</span>
                   <span className="col__vlabel">{s.kind === 'payment' ? `${s.name} · не рекомендуется` : s.name}</span>
@@ -297,7 +270,7 @@ export default function Pipeline() {
                 className={`col col--${s.kind}${over === s.id ? ' is-over' : ''}`}
                 style={{ ['--stage' as string]: s.color }}
                 aria-label={s.name}
-                {...colDnD(s.id)}
+                data-drop={s.id}
               >
                 <StageHead
                   stage={s}
@@ -306,7 +279,7 @@ export default function Pipeline() {
                   edit={edit}
                   onCollapse={collapsible ? toggle : undefined}
                 />
-                <div className="col__body">
+                <div className="col__body" data-drop-scroll>
                   {s.id === firstOpen?.id && <QuickAdd stageId={s.id} />}
                   {list.map((d) => (
                     <DealCard key={d.id} {...cardProps(d)} />
@@ -322,19 +295,7 @@ export default function Pipeline() {
 
       {dragId && !isMobile && (
         <div className="drop-bar" role="presentation">
-          <div
-            className={`drop-zone drop-zone--delete${over === '__delete' ? ' is-over' : ''}`}
-            onDragOver={(e) => {
-              e.preventDefault();
-              if (over !== '__delete') setOver('__delete');
-            }}
-            onDragLeave={() => setOver(null)}
-            onDrop={(e) => {
-              e.preventDefault();
-              endDrag();
-              toast('Удалять сделки нельзя: по ним считается конверсия в отказ');
-            }}
-          >
+          <div className={`drop-zone drop-zone--delete${over === '__delete' ? ' is-over' : ''}`} data-drop="__delete">
             <Trash2 aria-hidden="true" />
             Удалить
           </div>
@@ -344,12 +305,7 @@ export default function Pipeline() {
               <div
                 key={s.id}
                 className={`drop-zone drop-zone--${s.kind}${over === `z-${s.id}` ? ' is-over' : ''}`}
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  if (over !== `z-${s.id}`) setOver(`z-${s.id}`);
-                }}
-                onDragLeave={() => setOver(null)}
-                onDrop={(e) => dropTo(e, s.id)}
+                data-drop={`z-${s.id}`}
               >
                 {s.name}
               </div>
@@ -559,8 +515,7 @@ interface CardProps {
   landed: boolean;
   onOpen: () => void;
   onMenu: () => void;
-  onDragStart: (e: DragEvent<HTMLDivElement>) => void;
-  onDragEnd: () => void;
+  onPointerDown: (e: ReactPointerEvent<HTMLElement>) => void;
   mobile: boolean;
 }
 
@@ -575,9 +530,7 @@ function DealCard(p: CardProps) {
   return (
     <div
       className={`deal-card${p.dragging ? ' is-dragging' : ''}${p.landed ? ' is-landed' : ''}`}
-      draggable={!p.mobile}
-      onDragStart={p.onDragStart}
-      onDragEnd={p.onDragEnd}
+      onPointerDown={p.onPointerDown}
       onClick={(e) => {
         if (press.current?.fired) {
           press.current = null;
@@ -628,6 +581,7 @@ function DealCard(p: CardProps) {
       </div>
       <button
         className="deal-card__more"
+        data-no-drag
         aria-label={`Переместить «${deal.title}» в этап`}
         title="Переместить в этап"
         onClick={(e) => {

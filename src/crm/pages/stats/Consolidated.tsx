@@ -276,7 +276,7 @@ export default function Consolidated({ filter }: ReportProps) {
                     </span>
                   </div>
                   <div className="stats-bars__track">
-                    <div className="stats-bars__fill" style={{ width: `${share}%`, background: SLIT_COLOR }} />
+                    <div className="stats-bars__fill" style={{ transform: `scaleX(${share / 100})`, background: SLIT_COLOR }} />
                   </div>
                 </li>
               );
@@ -297,7 +297,7 @@ export default function Consolidated({ filter }: ReportProps) {
                     <span className="stats-bars__val tabular">{nf(r.count)}</span>
                   </div>
                   <div className="stats-bars__track">
-                    <div className="stats-bars__fill" style={{ width: `${(r.count / maxReason) * 100}%`, background: SLIT_COLOR }} />
+                    <div className="stats-bars__fill" style={{ transform: `scaleX(${r.count / maxReason})`, background: SLIT_COLOR }} />
                   </div>
                   <span className="stats-bars__ex" title={r.examples.join('\n')}>
                     Например: {r.examples[0]?.toLowerCase()}

@@ -336,7 +336,7 @@
   border: 0;
   border-radius: 4px;
   background: rgba(127, 140, 150, 0.45);
-  transition: width 240ms var(--ease-out), background var(--dur);
+  transition: background var(--dur);
 }
 .mkt-banners__dots button.is-on {
   width: 22px;

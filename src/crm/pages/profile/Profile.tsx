@@ -61,7 +61,7 @@ function AchievementTile({ a }: { a: Achievement }) {
         ) : a.goal ? (
           <span className="prof-ach__progress">
             <span className="prof-bar" role="progressbar" aria-valuemin={0} aria-valuemax={a.goal} aria-valuenow={progress} aria-label={a.title}>
-              <span style={{ width: `${pct}%` }} />
+              <span style={{ transform: `scaleX(${pct / 100})` }} />
             </span>
             <span className="tabular">
               {progress} из {a.goal}
@@ -118,7 +118,7 @@ export default function Profile() {
               </strong>
             </div>
             <span className="prof-bar prof-bar--plan" role="progressbar" aria-valuemin={0} aria-valuemax={plan} aria-valuenow={s.slit} aria-label="План по сливу">
-              <span style={{ width: `${planPct}%` }} />
+              <span style={{ transform: `scaleX(${Math.min(planPct, 100) / 100})` }} />
             </span>
             <p>{planPct >= 100 ? 'План выполнен. Геннадий доволен, но виду не подаёт.' : 'Слейте ещё пару лидов, и наставник вами загордится.'}</p>
           </div>

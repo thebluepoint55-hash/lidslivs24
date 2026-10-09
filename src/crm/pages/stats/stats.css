@@ -550,7 +550,6 @@
 .stats-funnel__bar {
   height: 100%;
   border-radius: 3px;
-  transition: width 260ms var(--ease-out);
 }
 .stats-funnel__pct {
   position: absolute;
@@ -695,9 +694,11 @@
   overflow: hidden;
 }
 .stats-bars__fill {
+  width: 100%;
   height: 100%;
   border-radius: 4px;
-  transition: width 260ms var(--ease-out);
+  transform-origin: left center;
+  transition: transform 260ms var(--ease-out);
 }
 .stats-bars__ex {
   display: block;
@@ -954,7 +955,9 @@
   height: 100%;
   border-radius: 4px;
   background: var(--accent);
-  transition: width 260ms var(--ease-out);
+  width: 100%;
+  transform-origin: left center;
+  transition: transform 260ms var(--ease-out);
 }
 .stats-goal--done .stats-goal__fill {
   background: var(--success);

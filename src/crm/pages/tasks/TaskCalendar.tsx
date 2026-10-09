@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { createContext, useContext, useMemo, type PointerEvent } from 'react';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import type { Task } from '../../../store/types';
 import { Button } from '../../ui';
@@ -12,10 +12,32 @@ const HOURS = Array.from({ length: 13 }, (_, i) => i + 8); // 8:00–20:00
 const mondayOf = (d: Date) => addDays(startOfDay(d), -((d.getDay() + 6) % 7));
 const byDue = (a: Task, b: Task) => +new Date(a.due) - +new Date(b.due);
 
+/** ключ дня для перетаскивания: day-ГГГГ-ММ-ДД, слот часа: day-ГГГГ-ММ-ДД-ЧЧ */
+export const dayKey = (d: Date, hour?: number) => {
+  const p = (n: number) => String(n).padStart(2, '0');
+  return `day-${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}${hour === undefined ? '' : `-${p(hour)}`}`;
+};
+
+export interface CalDrag {
+  dragId: string | null;
+  over: string | null;
+  bind: (id: string) => { onPointerDown: (e: PointerEvent<HTMLElement>) => void };
+}
+const DragCtx = createContext<CalDrag | null>(null);
+
 function Chip({ task, onOpen, compact }: { task: Task; onOpen: (t: Task) => void; compact?: boolean }) {
-  const cls = ['tasks-chip', isOverdue(task) && 'is-overdue', task.done && 'is-done'].filter(Boolean).join(' ');
+  const drag = useContext(DragCtx);
+  const cls = ['tasks-chip', isOverdue(task) && 'is-overdue', task.done && 'is-done', drag?.dragId === task.id && 'is-dragging']
+    .filter(Boolean)
+    .join(' ');
   return (
-    <button type="button" className={cls} onClick={() => onOpen(task)} title={`${TYPE_SHORT[task.type]}: ${task.text}`}>
+    <button
+      type="button"
+      className={cls}
+      onClick={() => onOpen(task)}
+      title={`${TYPE_SHORT[task.type]}: ${task.text}`}
+      onPointerDown={drag && !task.done ? drag.bind(task.id).onPointerDown : undefined}
+    >
       {!compact && <span className="tasks-chip__time tabular">{timeLabel(task.due)}</span>}
       <span className="tasks-chip__text">
         {TYPE_SHORT[task.type]}: {task.text}
@@ -32,6 +54,7 @@ export function TaskCalendar({
   tasks,
   onOpen,
   onAdd,
+  drag,
 }: {
   mode: CalMode;
   anchor: Date;
@@ -40,6 +63,7 @@ export function TaskCalendar({
   tasks: Task[];
   onOpen: (t: Task) => void;
   onAdd: (d: Date) => void;
+  drag?: CalDrag;
 }) {
   const today = new Date();
   const tasksOn = useMemo(() => {
@@ -70,8 +94,11 @@ export function TaskCalendar({
     label = anchor.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' });
   }
 
+  const over = drag?.over;
+
   return (
-    <div className="tasks-cal">
+    <DragCtx.Provider value={drag ?? null}>
+    <div className={`tasks-cal${drag?.dragId ? ' is-dragging' : ''}`}>
       <div className="tasks-cal__bar">
         <Button size="sm" icon={<ChevronLeft />} aria-label="Назад" onClick={() => shift(-1)} />
         <Button size="sm" onClick={() => setAnchor(new Date())}>
@@ -81,14 +108,31 @@ export function TaskCalendar({
         <h2 className="tasks-cal__label">{label}</h2>
       </div>
 
-      {mode === 'month' && <MonthGrid anchor={anchor} today={today} tasksOn={tasksOn} onOpen={onOpen} onAdd={onAdd} onDay={(d) => { setAnchor(d); setMode('day'); }} />}
+      {mode === 'month' && (
+        <MonthGrid
+          anchor={anchor}
+          today={today}
+          tasksOn={tasksOn}
+          onOpen={onOpen}
+          onAdd={onAdd}
+          onDay={(d) => {
+            setAnchor(d);
+            setMode('day');
+          }}
+          over={over}
+        />
+      )}
 
       {mode === 'week' && (
         <div className="tasks-week">
           {Array.from({ length: 7 }, (_, i) => addDays(mondayOf(anchor), i)).map((d, i) => {
             const list = tasksOn(d);
             return (
-              <section key={i} className={`tasks-week__col${sameDay(d, today) ? ' is-today' : ''}`}>
+              <section
+                key={i}
+                className={`tasks-week__col${sameDay(d, today) ? ' is-today' : ''}${over === dayKey(d) ? ' is-over' : ''}`}
+                data-drop={dayKey(d)}
+              >
                 <header className="tasks-week__head">
                   <span>{WEEKDAYS[i]}</span>
                   <button type="button" className="tasks-week__date tabular" onClick={() => { setAnchor(d); setMode('day'); }}>
@@ -109,8 +153,9 @@ export function TaskCalendar({
         </div>
       )}
 
-      {mode === 'day' && <DayGrid day={anchor} tasks={tasksOn(anchor)} onOpen={onOpen} onAdd={onAdd} />}
+      {mode === 'day' && <DayGrid day={anchor} tasks={tasksOn(anchor)} onOpen={onOpen} onAdd={onAdd} over={over} />}
     </div>
+    </DragCtx.Provider>
   );
 }
 
@@ -121,6 +166,7 @@ function MonthGrid({
   onOpen,
   onAdd,
   onDay,
+  over,
 }: {
   anchor: Date;
   today: Date;
@@ -128,6 +174,7 @@ function MonthGrid({
   onOpen: (t: Task) => void;
   onAdd: (d: Date) => void;
   onDay: (d: Date) => void;
+  over?: string | null;
 }) {
   const first = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
   const start = mondayOf(first);
@@ -142,9 +189,11 @@ function MonthGrid({
       {cells.map((d, i) => {
         const list = tasksOn(d);
         const out = d.getMonth() !== anchor.getMonth();
-        const cls = ['tasks-month__cell', out && 'is-out', sameDay(d, today) && 'is-today'].filter(Boolean).join(' ');
+        const cls = ['tasks-month__cell', out && 'is-out', sameDay(d, today) && 'is-today', over === dayKey(d) && 'is-over']
+          .filter(Boolean)
+          .join(' ');
         return (
-          <div key={i} className={cls}>
+          <div key={i} className={cls} data-drop={dayKey(d)}>
             <div className="tasks-month__top">
               <button type="button" className="tasks-month__num tabular" onClick={() => onDay(d)} aria-label={`Открыть ${d.toLocaleDateString('ru-RU')}`}>
                 {d.getDate()}
@@ -168,7 +217,19 @@ function MonthGrid({
   );
 }
 
-function DayGrid({ day, tasks, onOpen, onAdd }: { day: Date; tasks: Task[]; onOpen: (t: Task) => void; onAdd: (d: Date) => void }) {
+function DayGrid({
+  day,
+  tasks,
+  onOpen,
+  onAdd,
+  over,
+}: {
+  day: Date;
+  tasks: Task[];
+  onOpen: (t: Task) => void;
+  onAdd: (d: Date) => void;
+  over?: string | null;
+}) {
   const allDay = tasks.filter((t) => {
     const d = new Date(t.due);
     return d.getHours() === 0 && d.getMinutes() === 0;
@@ -192,7 +253,7 @@ function DayGrid({ day, tasks, onOpen, onAdd }: { day: Date; tasks: Task[]; onOp
       {HOURS.map((h) => (
         <div key={h} className="tasks-day__row">
           <div className="tasks-day__hour tabular">{String(h).padStart(2, '0')}:00</div>
-          <div className="tasks-day__slot">
+          <div className={`tasks-day__slot${over === dayKey(day, h) ? ' is-over' : ''}`} data-drop={dayKey(day, h)}>
             {atHour(h).map((t) => (
               <Chip key={t.id} task={t} onOpen={onOpen} />
             ))}

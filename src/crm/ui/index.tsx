@@ -11,6 +11,8 @@ import { Award, CheckCircle2, Info, Search, X, AlertTriangle } from 'lucide-reac
 import { useUI } from '../../store/ui';
 import './ui.css';
 
+export { useBoardDrag } from './drag';
+
 // ---------- Button ----------
 
 type BtnVariant = 'primary' | 'anti' | 'secondary' | 'ghost' | 'danger';

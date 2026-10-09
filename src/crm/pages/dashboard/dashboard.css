@@ -520,7 +520,9 @@
   height: 100%;
   border-radius: 2px;
   background: #74e0a8;
-  transition: width 260ms var(--ease-out);
+  width: 100%;
+  transform-origin: left center;
+  transition: transform 260ms var(--ease-out);
 }
 .dash-rank__val {
   font-size: 16px;

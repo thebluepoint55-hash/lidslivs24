@@ -2,8 +2,8 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CalendarClock, Check, ChevronDown, Columns3, List, Plus, SlidersHorizontal } from 'lucide-react';
 import type { Task } from '../../../store/types';
-import { managerName, useDemo, useStore } from '../../../store/store';
-import { Button, Empty, Menu, PageHeader, plural, useIsMobile } from '../../ui';
+import { fmtDay, managerName, nextHoliday, useDemo, useStore } from '../../../store/store';
+import { Button, Empty, Menu, PageHeader, plural, useBoardDrag, useIsMobile } from '../../ui';
 import { AddTaskModal, CompleteTaskModal, TaskSheet } from './TaskModals';
 import { MobileTaskRow, Postpones, SwipeRow, TaskCard } from './TaskViews';
 import { TaskCalendar, type CalMode } from './TaskCalendar';
@@ -29,11 +29,66 @@ const COLUMNS: { id: Bucket; title: string; mobile: string; color: string; sub?:
 
 const byDue = (a: Task, b: Task) => +new Date(a.due) - +new Date(b.due);
 
+/** Новый срок задачи по месту, куда её бросили: колонка канбана или день/час календаря */
+function dueForDrop(task: Task, target: string): { due: string; message: string } | null {
+  const cur = new Date(task.due);
+  const at = (d: Date, h = cur.getHours(), m = cur.getMinutes()) => {
+    const x = new Date(d);
+    x.setHours(h, m, 0, 0);
+    return x;
+  };
+  const today = new Date();
+  if (target === 'col-overdue') {
+    const d = at(new Date(today.getTime() - 86400_000));
+    return { due: d.toISOString(), message: 'Задача сразу просрочена. Экономим время на ожидании' };
+  }
+  if (target === 'col-today') {
+    // 18:00, а если этот час уже прошёл — через час, но не позже конца дня
+    let d = at(today, 18, 0);
+    if (d.getTime() <= today.getTime()) {
+      const endOfDay = at(today, 23, 59);
+      d = new Date(Math.min(today.getTime() + 3600_000, endOfDay.getTime()));
+    }
+    return { due: d.toISOString(), message: 'Задача на сегодня. Смело, но её всегда можно перенести' };
+  }
+  if (target === 'col-tomorrow') {
+    const d = at(new Date(today.getTime() + 86400_000), 10, 0);
+    return { due: d.toISOString(), message: 'Перенесено на завтра. Классика жанра' };
+  }
+  if (target === 'col-later') {
+    const h = nextHoliday();
+    return { due: h.date.toISOString(), message: `Перенесено на после праздника «${h.name}». Так держать` };
+  }
+  const m = /^day-(\d{4})-(\d{2})-(\d{2})(?:-(\d{2}))?$/.exec(target);
+  if (m) {
+    const d = new Date(+m[1], +m[2] - 1, +m[3]);
+    const due = m[4] ? at(d, +m[4], 0) : at(d);
+    const later = due.getTime() > cur.getTime();
+    return {
+      due: due.toISOString(),
+      message: later ? `Срок перенесён на ${fmtDay(due.toISOString())}. Клиент подождёт` : `Срок сдвинут на ${fmtDay(due.toISOString())}. Не перестарайтесь`,
+    };
+  }
+  return null;
+}
+
 export default function Tasks() {
   const demo = useDemo();
   const postponeAllTasks = useStore((s) => s.postponeAllTasks);
   const postponeTask = useStore((s) => s.postponeTask);
+  const moveTask = useStore((s) => s.moveTask);
   const isMobile = useIsMobile();
+
+  // перетаскивание задач мышью между колонками и днями календаря
+  const drag = useBoardDrag({
+    disabled: isMobile,
+    onDrop: (id, target) => {
+      const t = demo.tasks.find((x) => x.id === id);
+      if (!t || t.done) return;
+      const r = dueForDrop(t, target);
+      if (r) moveTask(id, r.due, r.message);
+    },
+  });
 
   const [view, setView] = useState<View>('kanban');
   const [filter, setFilter] = useState<Filter>('open');
@@ -142,11 +197,17 @@ export default function Tasks() {
           onPostpone={(t) => postponeTask(t.id)}
         />
       ) : view === 'kanban' ? (
-        <div className="tasks-board">
+        <div className={`tasks-board${drag.dragId ? ' is-dragging' : ''}`}>
           {COLUMNS.map((col) => {
             const list = buckets[col.id];
+            const key = `col-${col.id}`;
             return (
-              <section key={col.id} className="tasks-col" aria-label={col.title}>
+              <section
+                key={col.id}
+                className={`tasks-col${drag.over === key ? ' is-over' : ''}`}
+                aria-label={col.title}
+                data-drop={key}
+              >
                 <header className="tasks-col__head">
                   <h2 className="tasks-col__title">{col.title}</h2>
                   <p className="tasks-col__sub tabular">
@@ -155,10 +216,17 @@ export default function Tasks() {
                   </p>
                   <span className="tasks-col__line" style={{ background: col.color }} />
                 </header>
-                <div className="tasks-col__body">
+                <div className="tasks-col__body" data-drop-scroll>
                   {list.length === 0 && <p className="tasks-col__empty">{col.empty}</p>}
                   {list.map((t) => (
-                    <TaskCard key={t.id} task={t} onComplete={askComplete} onOpen={openSheet} />
+                    <TaskCard
+                      key={t.id}
+                      task={t}
+                      onComplete={askComplete}
+                      onOpen={openSheet}
+                      dragging={drag.dragId === t.id}
+                      onPointerDown={drag.bind(t.id).onPointerDown}
+                    />
                   ))}
                 </div>
               </section>
@@ -176,6 +244,7 @@ export default function Tasks() {
           tasks={tasks}
           onOpen={openSheet}
           onAdd={(d) => setAdding({ date: d })}
+          drag={drag}
         />
       )}
 

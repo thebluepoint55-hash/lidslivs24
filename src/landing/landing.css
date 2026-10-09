@@ -301,9 +301,7 @@ html:has(.ld-page)::-webkit-scrollbar-thumb {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  margin-top: 32px;
   font-size: 16px;
   color: var(--ld-on-sky-soft);
 }
@@ -319,7 +317,7 @@ html:has(.ld-page)::-webkit-scrollbar-thumb {
 }
 .ld-board {
   --g: 6px;
-  --card-h: 74px;
+  --card-h: 98px;
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -507,9 +505,11 @@ html:has(.ld-page)::-webkit-scrollbar-thumb {
   color: var(--ld-text);
 }
 .ld-deal__title {
+  /* шутка живёт в названии сделки — не обрезаем её многоточием */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   font-size: 12.5px;
   line-height: 1.3;
   color: var(--ld-link);
@@ -600,7 +600,7 @@ html:has(.ld-page)::-webkit-scrollbar-thumb {
 @media (min-width: 600px) {
   .ld-board {
     --g: 8px;
-    --card-h: 84px;
+    --card-h: 102px;
   }
   .ld-board__search,
   .ld-board__anti {

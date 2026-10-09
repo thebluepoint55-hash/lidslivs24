@@ -227,7 +227,7 @@ export default function Dashboard() {
                 <span className="dash-rank__body">
                   <span className="dash-rank__name">{r.name}</span>
                   <span className="dash-rank__track">
-                    <span className="dash-rank__fill" style={{ width: `${m.rankMax ? (r.count / m.rankMax) * 100 : 0}%` }} />
+                    <span className="dash-rank__fill" style={{ transform: `scaleX(${m.rankMax ? r.count / m.rankMax : 0})` }} />
                   </span>
                 </span>
                 <span className="dash-rank__val">{nf(r.count)}</span>

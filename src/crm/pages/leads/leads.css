@@ -233,7 +233,8 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 10px 0 24px;
+  /* снизу место под кнопку «Отмаз» */
+  padding: 10px 0 var(--fab-clear, 76px);
 }
 .col__empty {
   margin: 0;
@@ -446,18 +447,6 @@
     background: #fff5d1;
     border-color: #f0cf6a;
   }
-}
-.drag-ghost {
-  position: fixed;
-  top: -2000px;
-  left: 0;
-  padding: 14px;
-  pointer-events: none;
-}
-.drag-ghost .deal-card {
-  transform: rotate(2deg);
-  border-color: #a7aeb3;
-  box-shadow: var(--shadow-drag);
 }
 .deal-card__top {
   display: flex;
@@ -1306,7 +1295,9 @@
   height: 100%;
   border-radius: 3px;
   background: currentColor;
-  transition: width 400ms var(--ease-out);
+  width: 100%;
+  transform-origin: left center;
+  transition: transform 400ms var(--ease-out);
 }
 .chance small {
   font-size: 12px;
@@ -2005,7 +1996,7 @@
   bottom: 0;
   height: var(--h);
   background: var(--c);
-  transition: height 500ms var(--ease-out), background-color 500ms var(--ease-out);
+  transition: background-color 500ms var(--ease-out);
 }
 .thermo__deg {
   font-size: var(--fs-xl);

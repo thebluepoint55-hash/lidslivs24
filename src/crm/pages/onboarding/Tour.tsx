@@ -265,16 +265,6 @@ export default function Tour() {
             <FileLock2 size={26} strokeWidth={1.6} />
           </span>
         )}
-        <div className="tour-card__step">
-          <span className="tabular">
-            Шаг {idx + 1} из {STEPS.length}
-          </span>
-          <span className="tour-dots" aria-hidden="true">
-            {STEPS.map((s, i) => (
-              <i key={s.id} className={i === idx ? 'is-on' : i < idx ? 'is-past' : ''} />
-            ))}
-          </span>
-        </div>
         <h2 className="tour-card__title" id="tour-title">
           {step.title}
         </h2>
@@ -285,6 +275,11 @@ export default function Tour() {
           <button className="tour-card__later" onClick={() => close('postpone')}>
             Перенести обучение на завтра
           </button>
+          <span className="tour-dots" role="img" aria-label={`Шаг ${idx + 1} из ${STEPS.length}`}>
+            {STEPS.map((s, i) => (
+              <i key={s.id} className={i === idx ? 'is-on' : i < idx ? 'is-past' : ''} />
+            ))}
+          </span>
           <button ref={nextBtn} className="btn btn--primary" onClick={next} disabled={waiting}>
             {isFinal ? 'Начать сливать' : 'Дальше'}
           </button>
