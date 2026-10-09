@@ -1,0 +1,59 @@
+/* Токены ЛидСливс24. Нейтральные значения сняты с amoCRM (09.10.2026),
+   акценты — вариант 1 «почти amo». Источник: docs/01-концепция-и-дизайн.md */
+
+:root {
+  /* каркас */
+  --sidebar: #13304f;
+  --sidebar-top: #0f2742;
+  --sidebar-text: #9fb3c8;
+  --sidebar-hover: rgba(255, 255, 255, 0.06);
+
+  /* акценты */
+  --accent: #2f80ed;
+  --accent-hover: #1f6fdc;
+  --accent-border: #2268c9;
+  --link: #0057a9;
+  --anti: #ff5b36;
+  --anti-hover: #f04a24;
+  --anti-soft: #fff0eb;
+  --success: #27ae60;
+  --success-soft: #e6f6ec;
+  --danger: #e2574c;
+  --danger-soft: #fdecea;
+  --warning: #e4b248;
+  --lime: #d7f56b; /* плашка «Установлено» в маркете */
+
+  /* нейтральные (как у amo) */
+  --text: #363b44;
+  --muted: #92989b;
+  --stage-title: #6b6d72;
+  --line: #c5c5c5;
+  --line-soft: #e8eaeb;
+  --bg: #f5f5f5;
+  --surface: #ffffff;
+  --widgets-bg: #e4e4e4;
+  --hover-row: #f2f7fd;
+
+  /* типографика */
+  --font: 'PT Sans', Arial, sans-serif;
+  --font-caption: 'PT Sans Caption', 'PT Sans', Arial, sans-serif;
+  --fs-xs: 11px;
+  --fs-sm: 13px;
+  --fs-md: 15px;
+  --fs-lg: 18px;
+  --fs-xl: 23px;
+
+  /* размеры */
+  --sidebar-w: 65px;
+  --header-h: 64px;
+  --radius: 4px;
+  --radius-lg: 8px;
+  --col-w: 290px;
+  --tabbar-h: 58px;
+
+  /* тени и движение */
+  --shadow-pop: 0 6px 24px rgba(19, 48, 79, 0.16), 0 1px 4px rgba(19, 48, 79, 0.1);
+  --shadow-drag: 0 10px 28px rgba(19, 48, 79, 0.22);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 180ms;
+}

@@ -1,0 +1,65 @@
+.entry {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: linear-gradient(160deg, #1d5fa8 0%, #13304f 70%);
+  color: #fff;
+}
+.entry__card {
+  width: min(420px, 100%);
+  text-align: center;
+}
+.entry__logo {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 28px;
+}
+.entry__logo span {
+  color: #ffb39f;
+}
+.entry__logo sup {
+  font-size: 15px;
+  margin-left: 2px;
+  color: #ffb39f;
+}
+.entry__step {
+  min-height: 22px;
+  margin: 0 0 14px;
+  font-size: 17px;
+  color: #dbe7f3;
+}
+.entry__bar {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+.entry__fill {
+  height: 100%;
+  width: 30%;
+  background: var(--anti);
+  border-radius: 2px;
+}
+.entry__fill--run {
+  animation: entry-fill 2.5s var(--ease-out) forwards;
+}
+.entry__note {
+  margin: 18px 0 0;
+  font-size: 13px;
+  color: #9fb3c8;
+}
+@keyframes entry-fill {
+  from {
+    width: 0;
+  }
+  70% {
+    width: 92%;
+  }
+  to {
+    width: 100%;
+  }
+}
