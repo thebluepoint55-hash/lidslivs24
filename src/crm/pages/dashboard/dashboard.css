@@ -48,6 +48,10 @@
 .dash-otmaz-btn svg {
   color: #ffb39f;
 }
+/* «Отмаз» и «События» — одна группа у правого края */
+.dash-otmaz-btn + .dash-events-btn {
+  margin-left: 0;
+}
 
 /* ---------- верхняя строка ---------- */
 .dash-top {
