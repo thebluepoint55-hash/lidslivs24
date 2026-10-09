@@ -207,6 +207,7 @@
   }
   .otmaz-fab {
     position: fixed;
+    z-index: 46; /* над закреплёнными нижними панелями страниц */
     right: 14px;
     bottom: calc(var(--tabbar-h) + 14px + env(safe-area-inset-bottom));
     width: 48px;

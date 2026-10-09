@@ -608,6 +608,8 @@ export const useStore = create<Store>()(
       version: SEED_VERSION,
       storage: createJSONStorage(() => safeStorage),
       partialize: (s) => ({ demo: s.demo }) as Store,
+      // старая версия демо просто пересоздаётся из свежих данных
+      migrate: () => ({ demo: null }) as unknown as Store,
       onRehydrateStorage: () => () => {
         useStore.setState({ hydrated: true });
       },

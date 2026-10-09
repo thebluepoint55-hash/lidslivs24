@@ -805,10 +805,14 @@
     height: 19px;
   }
   .dash-search {
+    flex: 1 1 auto;
+    min-width: 0;
     max-width: none;
     padding: 0 10px;
   }
   .dash-events-btn {
+    position: relative;
+    flex: none;
     width: 36px;
     padding: 0;
     justify-content: center;
