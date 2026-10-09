@@ -1,11 +1,34 @@
-import type { AuthorId, FeedItem, FeedKind } from '../store/types';
-import { stages } from './base';
-import { contacts } from './people';
+import type { AuthorId, Deal, FeedItem, FeedKind } from '../store/types';
+import { managers, stages } from './base';
+import { companies, contacts } from './people';
 import { deals } from './deals';
+import { chats } from './chats';
 import { daysAgo, hoursAgo, minutesAgo } from './time';
+import {
+  AFTER_LOST,
+  ASSIGN,
+  BOSS_LOST,
+  ENTRY,
+  FEMALE,
+  FINALES,
+  HOLIDAYS,
+  HOOKS,
+  PATHS,
+  POOLS,
+  ROBOT,
+  VOICE,
+  fill,
+  money,
+  mulberry32,
+  type BI,
+  type Beat,
+  type Ctx,
+  type Meta,
+  type Who,
+} from './feedLib';
+import { RICH, richItems } from './feedRich';
 
 let counter = 0;
-type Meta = Record<string, string | number | boolean>;
 
 function f(dealId: string, at: string, kind: FeedKind, authorId: AuthorId, text: string, meta?: Meta): FeedItem {
   counter += 1;
@@ -27,7 +50,7 @@ const d = daysAgo;
 const stories: FeedItem[] = [
   // «Просит счёт (третий раз)»
   f('d-schet-3', d(66, 10, 12), 'created', 'robot', 'Сделка создана: заявка с сайта. Комментарий клиента: «Нужен счёт на 264 000, оплатим в тот же день»'),
-  f('d-schet-3', d(66, 10, 14), 'robot', 'robot', 'Робот назначил ответственного: Виталий Перекуров'),
+  f('d-schet-3', d(66, 10, 14), 'robot', 'robot', 'Робот назначил безответственного: Виталий Перекуров'),
   f('d-schet-3', d(66, 13, 40), 'call', 'm-perekurov', 'Входящий звонок от Марины Гдесчётовой. Пропущен', inMissed),
   f('d-schet-3', d(66, 14, 5), 'note', 'm-perekurov', 'Клиент просил выставить ему счет, но у меня был перекур, поэтому задачу перенес на завтра'),
   f('d-schet-3', d(65, 11, 20), 'task', 'm-perekurov', 'Задача «Выставить счёт» перенесена на завтра', { type: 'followup' }),
@@ -184,7 +207,7 @@ const stories: FeedItem[] = [
 
   // «Готов оплатить сегодня» — сегодняшняя горячая сделка стажёра
   f('d-hochu-segodnya', hoursAgo(5), 'created', 'robot', 'Сделка создана: входящий звонок. Трубку взяли случайно'),
-  f('d-hochu-segodnya', hoursAgo(5), 'robot', 'robot', 'Ответственный: Вы (стажёр). Руководитель решил, что вам пора учиться'),
+  f('d-hochu-segodnya', hoursAgo(5), 'robot', 'robot', 'Безответственный: Вы (стажёр). Руководитель решил, что вам пора учиться'),
   f('d-hochu-segodnya', minutesAgo(292), 'call', 'you', 'Входящий, 2:12. Клиент: «Готов оплатить сегодня, пришлите счёт до 17:00»', call('in', 'answered', 132)),
   f('d-hochu-segodnya', minutesAgo(270), 'note', 'm-perezvonov', 'Стажёр, это твой первый горячий. Главное — не торопи клиента'),
   f('d-hochu-segodnya', hoursAgo(3), 'email', 'client', 'Входящее письмо «Счёт»: «Жду счёт. Бухгалтер на месте до 17:00»'),
@@ -219,104 +242,230 @@ const stories: FeedItem[] = [
   f('d-r-4100', d(149, 16, 0), 'incident', 'm-perezvonov', 'Разбор инцидента. Кто виноват: хорошая память клиента. Меры: номера прошлых заказов клиентам не сообщать'),
 ];
 
-// ───────────────────── Остальные сделки: 2–5 событий ─────────────────────
 
-const voice: Record<string, string[]> = {
-  'm-perezvonov': [
-    'Клиента не торопим. Пусть дозреет',
-    'Наберу позже. Позже — понятие растяжимое',
-    'Обсудили на планёрке, решили не спешить',
-    'Перезвоню на следующей неделе. Или через одну',
-  ],
-  'm-zavtrakova': [
-    'Сделаю завтра. С утра. После кофе',
-    'Завтра точно отправлю, записала в ежедневник на завтра',
-    'Сегодня уже не успею, пятница',
-    'Перенесла на завтра: завтра я продуктивнее',
-  ],
-  'm-perekurov': [
-    'Отошёл на пять минут, вернулся — клиент уже написал трижды',
-    'Перезвоню после перекура',
-    'Вернусь через пять минут и всё сделаю',
-    'Был на перекуре, клиент дозвонился до охраны',
-  ],
-  'm-nedozvonova': [
-    'Трубку не брала: номер начинался на +7',
-    'Звонок пропустила, телефон на беззвучном с пятницы',
-    'Клиент снова звонил. Держимся',
-    'Набрала клиента с выключенного телефона. Не дозвонилась',
-  ],
-  'm-soglasuev': [
-    'Надо согласовать с руководством',
-    'Отправил на согласование. Согласующие в пути',
-    'Руководство согласовало. Теперь надо согласовать с бухгалтерией',
-    'Цена на согласовании, клиент на удержании',
-  ],
-  you: [
-    'Передали сделку мне. Пока не понимаю, что с ней не делать',
-    'Клиент хочет купить. Жду указаний наставника',
-    'Наставник сказал, что если клиент звонит сам, это проверка',
-  ],
-};
+// ───────────── Остальные сделки: цикл по этапам с типовыми косяками ─────────────
 
-const robotLines = [
-  'Робот перенёс задачу: менеджер выглядел уставшим',
-  'Клиент открыл КП 4 раза. Менеджер не заметил',
-  'Робот понизил температуру сделки: клиент пишет слишком часто',
-  'Робот отправил клиенту автоответ «Ваше обращение очень важно для нас»',
-  'Задача «Перезвонить» перенесена на завтра: сегодня пятница',
-  'Робот скрыл кнопку «Выставить счёт» в этой сделке',
-  'Клиент 3 раза заходил на страницу «Оплата». Страница не работает, всё штатно',
-  'Робот проставил тег «горячий — остудить»',
-];
-
-const clientLines = [
-  'WhatsApp: «Добрый день, где счёт?»',
-  'Входящее письмо: «Можно я просто переведу деньги?»',
-  'Telegram: «Вы ещё работаете?»',
-  'Avito: «Товар в наличии? Заберу сегодня»',
-  'Сайт: «Оставлял заявку вчера, никто не перезвонил»',
-];
+const MIN = 60_000;
+const HOUR = 60 * MIN;
+const DAY = 24 * HOUR;
+const NOW = Date.parse(minutesAgo(0));
+const CH_LABEL: Record<string, string> = { whatsapp: 'WhatsApp', telegram: 'Telegram', avito: 'Avito', site: 'Сайт', max: 'MAX' };
 
 const stageName = (id: string) => stages.find((s) => s.id === id)?.name ?? id;
-const firstStage: Record<string, string> = { 'p-main': 's-new', 'p-tender': 't-new', 'p-repeat': 'r-new' };
-const contactName = (id?: string) => contacts.find((c) => c.id === id)?.name ?? 'клиента';
+const lowerFirst = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
 const storyIds = new Set(stories.map((s) => s.dealId));
 
-const generated: FeedItem[] = [];
-deals
-  .filter((deal) => !storyIds.has(deal.id))
-  .forEach((deal, i) => {
-    const start = Date.parse(deal.createdAt);
-    const end = Date.parse(deal.closedAt ?? hoursAgo(1));
-    const span = Math.max(end - start, 0);
-    const point = (frac: number) => new Date(start + span * frac + 60_000).toISOString();
-    const r = deal.responsibleId;
-    const pool = voice[r] ?? voice['m-perezvonov'];
+let gCounter = 0;
 
-    generated.push(f(deal.id, deal.createdAt, 'created', 'robot', `Сделка создана. Источник: ${deal.source}`));
-    generated.push(f(deal.id, point(0.05), 'system', r, `Для поля «Причина будущего отказа» установлено значение «${deal.futureLossReason}»`));
+function channelFor(dealId: string, source: string, rnd: () => number): string {
+  const thread = chats.find((c) => c.dealId === dealId);
+  if (thread) return CH_LABEL[thread.channel];
+  if (/avito/i.test(source)) return 'Avito';
+  if (/whatsapp/i.test(source)) return 'WhatsApp';
+  if (source === 'Сайт' || source.startsWith('Виджет')) return 'Сайт';
+  return rnd() < 0.6 ? 'WhatsApp' : 'Telegram';
+}
 
-    if (i % 3 === 0) {
-      generated.push(f(deal.id, point(0.2), 'call', r, `Входящий от ${contactName(deal.contactId)}. Пропущен`, inMissed));
-    } else if (i % 3 === 1) {
-      generated.push(f(deal.id, point(0.2), 'chat', 'client', clientLines[i % clientLines.length]));
+function generate(deal: Deal): FeedItem[] {
+  const path = PATHS[deal.id];
+  if (!path) return [];
+  const rnd = mulberry32(deal.num * 7919 + 17);
+  const rint = (a: number, b: number) => a + Math.floor(rnd() * (b - a + 1));
+  const pick = <T,>(arr: readonly T[]): T => arr[Math.floor(rnd() * arr.length)];
+  const shuffle = <T,>(arr: readonly T[]): T[] => {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(rnd() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
     }
+    return a;
+  };
 
-    if (span > 3 * 3600_000 || deal.stageId.endsWith('new')) {
-      generated.push(f(deal.id, point(0.45), 'note', r, pool[i % pool.length]));
-    }
-    if (i % 2 === 0 && span > 6 * 3600_000) {
-      generated.push(f(deal.id, point(0.7), 'robot', 'robot', robotLines[i % robotLines.length]));
-    }
+  const r = deal.responsibleId;
+  const contact = contacts.find((c) => c.id === deal.contactId);
+  const clientName = contact?.name ?? 'клиента';
+  const first = clientName.split(' ')[0];
+  const others = companies.filter((c) => c.id !== deal.companyId);
+  const mgr = managers.find((m) => m.id === r);
+  const ctx: Partial<Ctx> = {
+    client: clientName,
+    first,
+    clientFemale: /[ая]$/.test(first),
+    sum: money(deal.budget),
+    sum3: money(deal.budget * 3),
+    sumOld: money(Math.round((deal.budget * 0.78) / 100) * 100),
+    other: pick(others).name,
+    ch: channelFor(deal.id, deal.source, rnd),
+    mgr: mgr?.name ?? 'Вы (стажёр)',
+    mgrFirst: mgr ? mgr.name.split(' ')[0] : 'Стажёр',
+    src: deal.source,
+    fl: deal.futureLossReason,
+  };
 
-    const from = firstStage[deal.pipelineId];
-    if (deal.stageId !== from) {
-      const reason = deal.lossReason ? `. Причина: ${deal.lossReason.charAt(0).toLowerCase()}${deal.lossReason.slice(1)}` : '';
-      generated.push(
-        f(deal.id, deal.closedAt ?? deal.stageSince, 'stage', r, `Этап изменён: ${stageName(from)} → ${stageName(deal.stageId)}${reason}`),
-      );
+  const resolve = (who: Who): AuthorId | null => {
+    if (who === 'r') return r;
+    if (who === 'boss') return r === 'm-perezvonov' ? null : 'm-perezvonov';
+    if (who === 'sogl') return r === 'm-soglasuev' ? null : 'm-soglasuev';
+    return who;
+  };
+  const valid = (items: BI[]) => items.every((it) => resolve(it[1]) !== null);
+
+  const out: FeedItem[] = [];
+  const add = (t: number, kind: FeedKind, who: Who, text: string, meta?: Meta) => {
+    const authorId = resolve(who);
+    if (!authorId) return;
+    const female = FEMALE.has(authorId) || (authorId === 'client' && Boolean(ctx.clientFemale));
+    const local = { ...ctx, n: rint(3, 9), N: rint(11, 48), holiday: pick(HOLIDAYS) };
+    gCounter += 1;
+    const item: FeedItem = {
+      id: `f2-${gCounter}`,
+      dealId: deal.id,
+      at: new Date(Math.round(t)).toISOString(),
+      kind,
+      authorId,
+      text: fill(text, local, female),
+    };
+    if (meta) item.meta = meta;
+    out.push(item);
+  };
+
+  /** Сдвигает момент в рабочие часы (9–19) того же или соседнего дня, если это укладывается в [lo, hi] */
+  const workHours = (t: number, lo: number, hi: number) => {
+    for (const shift of [0, 1, -1, 2, -2]) {
+      const d = new Date(t + shift * DAY);
+      d.setHours(rint(9, 19), rint(0, 59), 0, 0);
+      if (+d >= lo && +d <= hi) return +d;
+    }
+    return t;
+  };
+
+  /** Раскладывает сцену внутри отрезка [a, b] */
+  const placeBeat = (beat: Beat, a: number, b: number) => {
+    const offs = beat.items.map((it) => (it[3] ?? 0) * MIN);
+    const span = Math.max(0, ...offs);
+    const lo = a + 5 * MIN;
+    let scale = 1;
+    let hi = b - 5 * MIN - span;
+    if (hi <= lo) {
+      const avail = Math.max(b - a - 10 * MIN, 0);
+      scale = span > 0 ? Math.min(1, (avail * 0.5) / span) : 1;
+      hi = Math.max(lo, b - 5 * MIN - span * scale);
+    }
+    let start = workHours(lo + (hi - lo) * rnd(), lo, hi);
+    if (beat.clock) {
+      const d = new Date(start);
+      d.setHours(beat.clock[0], beat.clock[1], 0, 0);
+      if (+d >= lo && +d <= hi) start = +d;
+    }
+    beat.items.forEach(([kind, who, text, , meta], i) => add(start + offs[i] * scale, kind, who, text, meta));
+  };
+
+  const closed = Boolean(deal.closedAt);
+  const start = Date.parse(deal.createdAt);
+  const openStages = closed ? path.slice(0, -1) : path;
+  const k = openStages.length;
+  const lastT = Date.parse(deal.closedAt ?? deal.stageSince);
+  const end = closed ? lastT : NOW - 20 * MIN;
+
+  // моменты входа в этапы
+  const T: number[] = [start];
+  const parts = closed ? k : k - 1;
+  for (let i = 1; i < k; i++) {
+    if (!closed && i === k - 1) {
+      T.push(lastT);
+      continue;
+    }
+    let t = start + ((lastT - start) * (i + (rnd() - 0.5) * 0.5)) / Math.max(parts, 1);
+    const d = new Date(t);
+    d.setHours(rint(10, 18), rint(0, 59), 0, 0);
+    if (+d > T[i - 1] + 2 * HOUR && +d < lastT - 2 * HOUR) t = +d;
+    T.push(Math.max(t, T[i - 1] + HOUR));
+  }
+  const seg = (i: number): [number, number] => [T[i], i + 1 < k ? T[i + 1] : end];
+
+  // бюджет записей
+  const young = end - start < 2.5 * DAY;
+  const target = closed ? rint(12, 14) : young ? rint(14, 17) : rint(17, 20);
+
+  add(start, 'created', 'robot', `Сделка создана. Источник: ${deal.source}`);
+  add(start + rint(1, 4) * MIN, 'robot', 'robot', pick(ASSIGN));
+  add(start + rint(15, 90) * MIN, 'system', 'r', `Для поля «Причина будущего отказа» установлено значение «${deal.futureLossReason}»`);
+
+  for (let i = 1; i < k; i++) {
+    add(T[i], 'stage', 'r', `Этап изменён: ${stageName(openStages[i - 1])} → ${stageName(openStages[i])}`);
+    const entry = ENTRY[openStages[i]];
+    if (entry && rnd() < 0.6) add(T[i] + rint(3, 40) * MIN, 'note', 'r', pick(entry));
+  }
+
+  (HOOKS[deal.id] ?? []).forEach((h) => {
+    const i = openStages.indexOf(h.stage);
+    if (i >= 0) placeBeat({ items: h.items }, ...seg(i));
+  });
+
+  if (closed) {
+    const [a, b] = seg(k - 1);
+    const finale = FINALES[deal.id];
+    if (finale) placeBeat({ items: finale }, a + (b - a) * 0.7, b - 10 * MIN);
+    const final = path[path.length - 1];
+    const reason = deal.lossReason ? `. Причина: ${lowerFirst(deal.lossReason)}` : '';
+    add(lastT, 'stage', 'r', `Этап изменён: ${stageName(openStages[k - 1])} → ${stageName(final)}${reason}`);
+    const after = workHours(Math.min(lastT + rint(2, 30) * HOUR, NOW - 30 * MIN), lastT + HOUR, Math.min(lastT + 4 * DAY, NOW - 30 * MIN));
+    add(after, 'robot', 'robot', pick(AFTER_LOST));
+    if (rnd() < 0.6) {
+      const t = workHours(Math.min(after + rint(1, 5) * HOUR, NOW - 25 * MIN), after + 30 * MIN, Math.min(after + 3 * DAY, NOW - 25 * MIN));
+      add(t, 'note', 'boss', pick(BOSS_LOST));
+    }
+  }
+
+  // остаток раскладываем по этапам сценами из библиотеки
+  const remaining = Math.max(target - out.length, 2);
+  const weights = openStages.map((_, i) => {
+    const [a, b] = seg(i);
+    return (1 + Math.log1p((b - a) / DAY)) * (!closed && i === k - 1 ? 1.4 : 1);
+  });
+  const wsum = weights.reduce((s, w) => s + w, 0);
+  const voice = shuffle(VOICE[r] ?? VOICE['m-perezvonov']);
+  const robots = shuffle(ROBOT);
+  let left = remaining;
+
+  openStages.forEach((st, i) => {
+    const [a, b] = seg(i);
+    const days = (b - a) / DAY;
+    let quota = i === k - 1 ? left : Math.min(left, Math.max(1, Math.round((remaining * weights[i]) / wsum)));
+    left -= quota;
+    const beats = shuffle(POOLS[st] ?? []).filter((bt) => valid(bt.items) && (bt.min ?? 0) <= days);
+    while (quota > 0) {
+      const roll = rnd();
+      const bi = beats.findIndex((bt) => bt.items.length <= quota);
+      if (roll < 0.66 && bi >= 0) {
+        const [beat] = beats.splice(bi, 1);
+        placeBeat(beat, a, b);
+        quota -= beat.items.length;
+      } else if (roll < 0.86 && voice.length) {
+        placeBeat({ items: [['note', 'r', voice.pop()!]] }, a, b);
+        quota -= 1;
+      } else if (robots.length) {
+        placeBeat({ items: [['robot', 'robot', robots.pop()!]] }, a, b);
+        quota -= 1;
+      } else break;
     }
   });
 
-export const feed: FeedItem[] = [...stories, ...generated];
+  return out;
+}
+
+const generated: FeedItem[] = deals.filter((deal) => !storyIds.has(deal.id) && !RICH.has(deal.id)).flatMap(generate);
+
+// Сюжетные записи писались по дням без учёта точного часа создания сделки:
+// всё, что оказалось раньше createdAt, сдвигаем сразу за момент создания, сохраняя порядок.
+const createdOf = new Map(deals.map((deal) => [deal.id, Date.parse(deal.createdAt)]));
+const early = new Map<string, number>();
+for (const item of stories) {
+  const created = item.dealId ? createdOf.get(item.dealId) : undefined;
+  if (created === undefined || Date.parse(item.at) >= created) continue;
+  const k = early.get(item.dealId!) ?? 0;
+  early.set(item.dealId!, k + 1);
+  item.at = new Date(created + k * 2 * MIN).toISOString();
+}
+
+export const feed: FeedItem[] = [...stories, ...richItems, ...generated];
