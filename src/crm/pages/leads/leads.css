@@ -737,7 +737,7 @@
   padding-top: 12px;
 }
 .col--m .col__body {
-  padding-bottom: 32px;
+  padding-bottom: var(--fab-clear, 76px);
 }
 .col--m .deal-card {
   padding: 9px 10px 10px;

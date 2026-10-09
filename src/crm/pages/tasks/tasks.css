@@ -725,7 +725,8 @@
 
 /* ---------- телефон ---------- */
 .tasks-mobile {
-  padding-bottom: 24px;
+  /* место под плавающую «Отмаз» */
+  padding-bottom: var(--fab-clear, 76px);
 }
 .tasks-mobile__filters {
   display: flex;

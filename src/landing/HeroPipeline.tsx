@@ -25,7 +25,8 @@ const STAGE_HOLIDAY: Stage = { name: 'После праздников', color: '
 const STAGE_DONE: Stage = { name: 'Слит (успешно)', color: '#87f2c0' };
 
 const STAGES_WIDE = [STAGE_NEW, STAGE_THINK, STAGE_HOLIDAY, STAGE_DONE];
-const STAGES_NARROW = [STAGE_NEW, STAGE_THINK, STAGE_DONE];
+// на телефоне две колонки: в трёх фамилии и приписки обрезались, а шутка живёт именно в них
+const STAGES_NARROW = [STAGE_NEW, STAGE_DONE];
 
 type Lead = { who: string; title: string; note: string; date: string; sum: number; dot: 'late' | 'today' | 'none' };
 
@@ -143,7 +144,7 @@ const TOAST_MS = 2600;
 
 export default function HeroPipeline() {
   const wide = useMediaQuery('(min-width: 600px)');
-  const n = wide ? 4 : 3;
+  const n = wide ? 4 : 2;
   const stages = wide ? STAGES_WIDE : STAGES_NARROW;
 
   const reduced = useReducedMotion();

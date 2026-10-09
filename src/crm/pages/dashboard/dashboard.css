@@ -41,6 +41,14 @@
     radial-gradient(ellipse 60% 26% at 82% 106%, rgba(15, 39, 66, 0.85), transparent 70%);
 }
 
+/* плавающая «Отмаз» на рабочем столе не нужна: она в верхней панели */
+.shell:has(.dash) .otmaz-fab {
+  display: none;
+}
+.dash-otmaz-btn svg {
+  color: #ffb39f;
+}
+
 /* ---------- верхняя строка ---------- */
 .dash-top {
   display: flex;

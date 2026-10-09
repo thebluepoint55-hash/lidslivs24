@@ -212,7 +212,9 @@
     display: none;
   }
   .shell__content {
-    padding-bottom: calc(var(--tabbar-h) + var(--fab-clear) + env(safe-area-inset-bottom));
+    /* место под «Отмаз» даёт каждый прокручиваемый список сам, иначе у воронки
+       с собственной прокруткой колонок внизу оставалась мёртвая полоса */
+    padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
   }
   .otmaz-fab {
     position: fixed;

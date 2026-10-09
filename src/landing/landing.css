@@ -297,7 +297,8 @@ html:has(.ld-page)::-webkit-scrollbar-thumb {
 .ld-hero .ld-cta__note {
   color: var(--ld-on-sky-soft);
 }
-.ld-hero__trust {
+/* .ld-page p сбрасывает отступы, поэтому селектор с тем же весом + класс */
+.ld-page .ld-hero__trust {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -317,7 +318,7 @@ html:has(.ld-page)::-webkit-scrollbar-thumb {
 }
 .ld-board {
   --g: 6px;
-  --card-h: 98px;
+  --card-h: 112px;
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -538,9 +539,18 @@ html:has(.ld-page)::-webkit-scrollbar-thumb {
   background: #e4b248;
 }
 .ld-deal__note {
+  /* приписка — тоже шутка («Посоветуется с женой»), даём ей две строки */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  min-width: 0;
+}
+.ld-deal__meta {
+  align-items: flex-start;
+}
+.ld-deal__dot {
+  margin-top: 3px;
 }
 .ld-deal__date {
   display: none;
@@ -600,7 +610,7 @@ html:has(.ld-page)::-webkit-scrollbar-thumb {
 @media (min-width: 600px) {
   .ld-board {
     --g: 8px;
-    --card-h: 102px;
+    --card-h: 118px;
   }
   .ld-board__search,
   .ld-board__anti {

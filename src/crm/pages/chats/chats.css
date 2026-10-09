@@ -511,6 +511,12 @@
 }
 
 /* ---------- вкладка /app/chats ---------- */
+/* на телефоне в переписке «Отмаз» лёг бы на кнопку отправки; шаблоны отмазок есть над полем ввода */
+@media (max-width: 767px) {
+  .shell:has(.chats-page) .otmaz-fab {
+    display: none;
+  }
+}
 .chats-page {
   flex: 1;
   min-height: 0;

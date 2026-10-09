@@ -84,12 +84,12 @@
   gap: 6px;
 }
 .tour-dots {
-  display: inline-flex;
+  display: flex;
   gap: 4px;
-  margin-left: auto;
+  margin: -4px 0 14px;
 }
 .tour-card--final .tour-dots {
-  margin: 0 auto;
+  justify-content: center;
 }
 .tour-dots i {
   width: 6px;

@@ -2,9 +2,9 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
-import { Bell, Droplet, Menu as MenuIcon, Medal, Search, Settings2, Snowflake, X } from 'lucide-react';
+import { Bell, Droplet, Menu as MenuIcon, Medal, Search, Settings2, Snowflake, Sparkles, X } from 'lucide-react';
 import { displayBudget, displayTemperature, managerName, useDemo, useStore } from '../../../store/store';
-import { toast } from '../../../store/ui';
+import { toast, useUI } from '../../../store/ui';
 import type { DemoState } from '../../../store/types';
 import { Avatar, fmtDate, fmtRelDay, money, plural } from '../../ui';
 import { ChartTip } from '../stats/charts';
@@ -65,6 +65,16 @@ export default function Dashboard() {
           </span>
         </Link>
         <DealSearch />
+        {/* на рабочем столе «Отмаз» живёт в верхней панели: плавающая кнопка закрывала бы плитки */}
+        <button
+          type="button"
+          className="dash-events-btn dash-otmaz-btn"
+          onClick={() => useUI.getState().setAssistantOpen(true)}
+          aria-haspopup="dialog"
+        >
+          <Sparkles aria-hidden="true" />
+          <span className="dash-events-btn__text">Отмаз</span>
+        </button>
         <button type="button" className="dash-events-btn" onClick={() => setDrawer(true)} aria-haspopup="dialog">
           <MenuIcon aria-hidden="true" />
           <span className="dash-events-btn__text">События</span>
