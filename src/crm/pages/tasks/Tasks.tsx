@@ -269,7 +269,7 @@ function TaskTable({ tasks, onOpen, onComplete }: { tasks: Task[]; onOpen: (t: T
         <thead>
           <tr>
             <th>Дата исполнения</th>
-            <th>Ответственный</th>
+            <th>Безответственный</th>
             <th>Объект</th>
             <th>Тип и текст задачи</th>
             <th className="num">Переносов</th>

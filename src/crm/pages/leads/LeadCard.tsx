@@ -5,16 +5,22 @@ import {
   Building2,
   Check,
   ChevronDown,
+  Cigarette,
   FileText,
+  Handshake,
+  ListChecks,
   Lock,
   Paperclip,
   Puzzle,
   Siren,
   Snowflake,
   Sparkles,
+  TreePalm,
   Upload,
   UserPlus,
+  UserX,
 } from 'lucide-react';
+import { hashOf, minutesToSmoke } from '../../appEffects';
 import {
   displayBudget,
   displayTemperature,
@@ -179,15 +185,15 @@ function DealView({ deal, demo }: { deal: Deal; demo: DemoState }) {
   const mainFields = (
     <>
       <dl className="ec-fields">
-        <Field label="Отв-ный">
+        <Field label="Безотв-ный">
           <Menu
             items={managers.map((m) => ({
               label: m.name,
               icon: m.id === deal.responsibleId ? <Check /> : <span style={{ width: 16 }} />,
               onClick: () => {
                 if (m.id === deal.responsibleId) return;
-                updateDeal(deal.id, { responsibleId: m.id }, `Для поля «Ответственный» установлено значение «${m.name}»`);
-                toast(`Ответственный: ${m.name}. Пусть теперь он не перезванивает`);
+                updateDeal(deal.id, { responsibleId: m.id }, `Для поля «Безответственный» установлено значение «${m.name}»`);
+                toast(`Безответственный: ${m.name}. Пусть теперь он не перезванивает`);
               },
             }))}
             trigger={(p) => (
@@ -441,8 +447,14 @@ function DealView({ deal, demo }: { deal: Deal; demo: DemoState }) {
   const fridge = isInstalled(demo, APP.fridge);
   const excuses = isInstalled(demo, APP.excuses);
   const invoiceApp = isInstalled(demo, APP.invoice);
-  const detector = demo.apps.find((a) => a.installed && /платёжеспособ/i.test(a.name));
-  const any = fridge || excuses || invoiceApp || !!detector;
+  const detector = demo.apps.find((a) => a.installed && a.id === APP.solvency);
+  const notOurs = isInstalled(demo, APP.notOurClient);
+  const smoke = isInstalled(demo, APP.smokeSync);
+  const quest = isInstalled(demo, APP.questForm);
+  const vacation = isInstalled(demo, APP.vacation);
+  const toCompetitor = deal.tags.includes('передан конкуренту');
+  const h = hashOf(deal.id);
+  const any = fridge || excuses || invoiceApp || !!detector || notOurs || smoke || quest || vacation || toCompetitor;
 
   const widgets = (
     <>
@@ -509,6 +521,54 @@ function DealView({ deal, demo }: { deal: Deal; demo: DemoState }) {
             <span className="tabular">{deal.buyChance}%</span>
           </div>
           <p className="widget__note">{deal.buyChance >= 80 ? 'Сирена: клиент готов платить. Примите меры.' : 'Платёжеспособность в норме: платить не собирается.'}</p>
+        </div>
+      )}
+      {notOurs && (
+        <div className="widget">
+          <div className="widget__head">
+            <UserX aria-hidden="true" />
+            Квалификатор «Не наш клиент»
+          </div>
+          <p className="widget__big tabular">{95 + (h % 5)}%</p>
+          <p className="widget__note">Уверенность, что это не наш клиент. Причина: «{['хочет купить', 'просит счёт', 'платит вовремя', 'отвечает на звонки', 'знает, что ему нужно'][h % 5]}».</p>
+        </div>
+      )}
+      {smoke && (
+        <div className="widget">
+          <div className="widget__head">
+            <Cigarette aria-hidden="true" />
+            Синхронизация с перекуром
+          </div>
+          <p className="widget__big tabular">{minutesToSmoke()} мин</p>
+          <p className="widget__note">До следующего перекура. Новые задачи автоматически ставятся на 15 минут позже.</p>
+        </div>
+      )}
+      {quest && (
+        <div className="widget">
+          <div className="widget__head">
+            <ListChecks aria-hidden="true" />
+            Форма заявки «Квест»
+          </div>
+          <p className="widget__big tabular">Шаг {3 + (h % 41)} из 47</p>
+          <p className="widget__note">Клиент всё ещё заполняет форму. Следующий шаг: капча с выбором светофоров.</p>
+        </div>
+      )}
+      {vacation && (
+        <div className="widget">
+          <div className="widget__head">
+            <TreePalm aria-hidden="true" />
+            Режим отпуска
+          </div>
+          <p className="widget__note">Клиент получает автоответ «Я в отпуске до 2027 года» на каждое сообщение в чате.</p>
+        </div>
+      )}
+      {toCompetitor && (
+        <div className="widget widget--alarm">
+          <div className="widget__head">
+            <Handshake aria-hidden="true" />
+            Интеграция с конкурентом
+          </div>
+          <p className="widget__note">Лид передан партнёру ООО «Конкурент». Комиссия: 0 ₽. Зато спокойно.</p>
         </div>
       )}
       {!any && <p className="ec-widgets__empty">Виджеты не установлены. Лиды пока остывают сами.</p>}

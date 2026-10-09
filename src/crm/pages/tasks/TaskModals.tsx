@@ -214,7 +214,7 @@ export function TaskSheet({
           {dayLabel(task.due)} {timeLabel(task.due)}
           {overdue && ' · просрочена'}
         </dd>
-        <dt>Ответственный</dt>
+        <dt>Безответственный</dt>
         <dd>{managerName(demo, task.responsibleId)}</dd>
         {deal && (
           <>

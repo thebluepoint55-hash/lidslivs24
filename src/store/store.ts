@@ -28,11 +28,24 @@ const pick = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
 export const fmtDay = (iso: string) =>
   new Date(iso).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
 
-/** Ближайший праздник после сегодняшнего дня */
-export function nextHoliday(from = new Date()): { date: Date; name: string } {
+// без «Календаря праздников РФ+» CRM знает только крупные праздники
+const MAJOR_HOLIDAYS = new Set([
+  'Новый год',
+  'Рождество',
+  'День защитника Отечества',
+  'Международный женский день',
+  'Майские',
+  'День Победы',
+  'День России',
+  'День народного единства',
+]);
+
+/** Ближайший праздник после сегодняшнего дня; extended — полный календарь с Днём работника леса */
+export function nextHoliday(from = new Date(), extended = false): { date: Date; name: string } {
   const y = from.getFullYear();
+  const list = extended ? holidays : holidays.filter((h) => MAJOR_HOLIDAYS.has(h.name));
   const candidates = [y, y + 1].flatMap((year) =>
-    holidays.map((h) => ({ date: new Date(year, h.month - 1, h.day, 10), name: h.name })),
+    list.map((h) => ({ date: new Date(year, h.month - 1, h.day, 10), name: h.name })),
   );
   const after = candidates.filter((c) => c.date.getTime() > from.getTime() + 86400_000).sort((a, b) => +a.date - +b.date);
   const h = after[0];
@@ -40,7 +53,15 @@ export function nextHoliday(from = new Date()): { date: Date; name: string } {
   return { date: new Date(h.date.getTime() + 86400_000), name: h.name };
 }
 
-const coolDown: Record<Temperature, Temperature> = { hot: 'warm', warm: 'cold', cold: 'ice', ice: 'ice' };
+const REVERSE_REVIEWS = [
+  'Не перезвонили ни разу. Пять звёзд за стабильность',
+  'Ждал счёт два месяца, купил у соседей',
+  'Менеджер вежливый, но я так и не понял, что они продают',
+  'КП пришло в пятницу вечером, открыл в понедельник, а цена уже другая',
+  'Отличная компания, если вам ничего не нужно',
+];
+
+const coolDown: Record<Temperature, Temperature> ={ hot: 'warm', warm: 'cold', cold: 'ice', ice: 'ice' };
 
 // Демо живёт в рамках одной вкладки: sessionStorage переживает перезагрузку страницы,
 // но очищается при закрытии вкладки. Каждое новое открытие начинается с исходных данных.
@@ -173,6 +194,21 @@ export const useStore = create<Store>()(
 
       const findDeal = (d: Draft, id: ID) => d.deals.find((x) => x.id === id);
 
+      /** «Автоперенос Pro»: все открытые задачи — на день позже */
+      const autoPostpone = (d: Draft, greeting: string) => {
+        let n = 0;
+        for (const t of d.tasks) {
+          if (t.done) continue;
+          t.due = new Date(new Date(t.due).getTime() + 86400_000).toISOString();
+          t.postpones += 1;
+          n++;
+        }
+        if (!n) return;
+        d.stats.postponed += n;
+        log(d, { object: 'Приложение', objectName: 'Автоперенос Pro', event: `Перенесено задач: ${n}`, authorId: 'robot' });
+        setTimeout(() => toast(`Автоперенос Pro: ${n} задач перенесено на завтра. ${greeting}`, 'success'), 600);
+      };
+
       const moveToStage = (d: Draft, deal: Deal, stage: Stage, by: AuthorId = 'you') => {
         const from = d.stages.find((s) => s.id === deal.stageId);
         if (!from || from.id === stage.id) return;
@@ -207,18 +243,7 @@ export const useStore = create<Store>()(
             const today = new Date().toDateString();
             if (isInstalled(d, APP.autoPostpone) && d.ui.lastAutoPostpone !== today) {
               d.ui.lastAutoPostpone = today;
-              let n = 0;
-              for (const t of d.tasks) {
-                if (t.done) continue;
-                t.due = new Date(new Date(t.due).getTime() + 86400_000).toISOString();
-                t.postpones += 1;
-                n++;
-              }
-              if (n) {
-                d.stats.postponed += n;
-                log(d, { object: 'Приложение', objectName: 'Автоперенос Pro', event: `Перенесено задач: ${n}`, authorId: 'robot' });
-                setTimeout(() => toast(`Автоперенос Pro: ${n} задач перенесено на завтра. Доброе утро!`, 'success'), 600);
-              }
+              autoPostpone(d, 'Доброе утро!');
             }
           });
         },
@@ -320,7 +345,8 @@ export const useStore = create<Store>()(
         },
 
         postponeDeal: (id) => {
-          const h = nextHoliday();
+          const plus = !!get().demo && isInstalled(get().demo!, APP.holidaysPlus);
+          const h = nextHoliday(new Date(), plus);
           mutate((d) => {
             const deal = findDeal(d, id);
             if (!deal) return;
@@ -344,7 +370,12 @@ export const useStore = create<Store>()(
             });
             log(d, { object: 'Сделка', objectName: deal.title, event: 'Перенесено на после праздников', after: fmtDay(h.date.toISOString()) });
           });
-          toast(`Перенесено на после праздника «${h.name}». Так держать`, 'success');
+          toast(
+            plus
+              ? `Календарь праздников РФ+ нашёл повод: «${h.name}». Перенесено`
+              : `Перенесено на после праздника «${h.name}». Так держать`,
+            'success',
+          );
         },
 
         antiAction: (id, action) => {
@@ -370,13 +401,21 @@ export const useStore = create<Store>()(
               const kpStage = d.stages.find((s) => s.pipelineId === deal.pipelineId && /КП/.test(s.name));
               if (kpStage) moveToStage(d, deal, kpStage);
               feed(d, { dealId: id, kind: 'email', authorId: 'you', text: 'Коммерческое предложение запланировано на пятницу, 18:55. Тема письма: «Re: Fwd: КП (финал) (2)»' });
+              if (isInstalled(d, APP.kpSpam)) {
+                feed(d, {
+                  dealId: id,
+                  kind: 'robot',
+                  authorId: 'robot',
+                  text: 'КП-в-спам: письмо доставлено в папку «Спам» клиента. Открыто 0 раз. Отличная работа',
+                });
+              }
               const a = d.achievements.find((x) => x.id === 'friday-kp');
               if (a) a.progress = 1;
             }
             if (action === 'intern') {
               const before = managerName(d, deal.responsibleId);
               deal.responsibleId = 'you';
-              feed(d, { dealId: id, kind: 'system', authorId: 'robot', text: `Для поля «Ответственный» установлено значение «Вы (стажёр)». Было: «${before}»` });
+              feed(d, { dealId: id, kind: 'system', authorId: 'robot', text: `Для поля «Безответственный» установлено значение «Вы (стажёр)». Было: «${before}»` });
             }
             if (action === 'cool') {
               deal.temperature = coolDown[deal.temperature];
@@ -454,13 +493,16 @@ export const useStore = create<Store>()(
         },
 
         addTask: ({ dealId, type, text, due }) => {
+          const smoke = !!get().demo && isInstalled(get().demo!, APP.smokeSync);
           mutate((d) => {
+            // «Синхронизация с перекуром»: любая новая задача — на 15 минут позже
+            const finalDue = smoke ? new Date(new Date(due).getTime() + 15 * 60_000).toISOString() : due;
             const t: Task = {
               id: uid('t'),
               dealId,
               type,
-              text: text.trim() || 'Подумать о клиенте',
-              due,
+              text: `${text.trim() || 'Подумать о клиенте'}${smoke ? ' (после перекура)' : ''}`,
+              due: finalDue,
               responsibleId: 'you',
               done: false,
               postpones: 0,
@@ -558,6 +600,15 @@ export const useStore = create<Store>()(
             if (!c || !text.trim()) return;
             c.messages.push({ id: uid('m'), from: 'you', text: text.trim(), at: nowIso() });
             c.ignored = false;
+            // «Отзывы наоборот» прикладывает к каждому ответу отзывы недовольных клиентов
+            if (isInstalled(d, APP.reverseReviews)) {
+              c.messages.push({
+                id: uid('m'),
+                from: 'robot',
+                text: `Отзывы наоборот: отправили клиенту 3 отзыва недовольных клиентов. Самый убедительный: «${pick(REVERSE_REVIEWS)}»`,
+                at: nowIso(),
+              });
+            }
             if (c.dealId) feed(d, { dealId: c.dealId, kind: 'chat', authorId: 'you', text: text.trim() });
             log(d, { object: 'Чат', objectName: d.contacts.find((x) => x.id === c.contactId)?.name ?? 'Чат', event: 'Отправлено сообщение' });
           }),
@@ -600,6 +651,29 @@ export const useStore = create<Store>()(
             a.installedAt = nowIso();
             name = a.name;
             log(d, { object: 'Приложение', objectName: a.name, event: 'Установлено' });
+            // в демо сессия короткая — переносим сразу, не дожидаясь утра
+            if (a.id === APP.autoPostpone) {
+              d.ui.lastAutoPostpone = new Date().toDateString();
+              autoPostpone(d, 'Не дожидаясь утра');
+            }
+            // «Интеграция с конкурентом» сразу отдаёт горячих лидов партнёру
+            if (a.id === APP.competitor) {
+              let n = 0;
+              for (const deal of d.deals) {
+                const st = d.stages.find((s) => s.id === deal.stageId);
+                if (st?.kind !== 'open' || deal.temperature !== 'hot' || deal.tags.includes('передан конкуренту')) continue;
+                deal.tags.push('передан конкуренту');
+                deal.buyChance = Math.max(3, deal.buyChance - 40);
+                feed(d, {
+                  dealId: deal.id,
+                  kind: 'robot',
+                  authorId: 'robot',
+                  text: 'Интеграция с конкурентом: контакты клиента переданы партнёру ООО «Конкурент». Комиссия: 0 ₽, зато спокойно',
+                });
+                n++;
+              }
+              if (n) setTimeout(() => toast(`Интеграция с конкурентом: ${n} горячих лидов передано партнёру`, 'success'), 400);
+            }
           });
           if (name) toast(`«${name}» установлено`, 'success');
         },

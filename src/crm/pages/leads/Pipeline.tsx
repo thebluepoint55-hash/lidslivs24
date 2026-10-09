@@ -21,6 +21,7 @@ import {
   useStageMove,
   type TaskState,
 } from './shared';
+import { appChipsForDeal, type AppChip } from '../../appEffects';
 import './leads.css';
 
 const dealsWord = (n: number) => plural(n, ['сделка', 'сделки', 'сделок']);
@@ -107,6 +108,7 @@ export default function Pipeline() {
     onOpen: () => openDeal(d.id),
     onMenu: () => setMoveId(d.id),
     onPointerDown: bind(d.id).onPointerDown,
+    chips: appChipsForDeal(demo, d),
     mobile: isMobile,
   });
 
@@ -516,6 +518,8 @@ interface CardProps {
   onOpen: () => void;
   onMenu: () => void;
   onPointerDown: (e: ReactPointerEvent<HTMLElement>) => void;
+  /** метки установленных приложений СливМаркета */
+  chips: AppChip[];
   mobile: boolean;
 }
 
@@ -573,6 +577,15 @@ function DealCard(p: CardProps) {
         {deal.title}
       </Link>
       <JokeLine postpones={deal.postpones} tags={deal.tags} />
+      {p.chips.length > 0 && (
+        <div className="deal-card__apps">
+          {p.chips.map((c) => (
+            <span key={c.key} className={`app-chip app-chip--${c.tone}`} title={c.title}>
+              {c.label}
+            </span>
+          ))}
+        </div>
+      )}
       <div className="deal-card__bottom">
         <TaskDot state={p.taskState} />
         <span className="deal-card__budget tabular">{money(p.budget)}</span>

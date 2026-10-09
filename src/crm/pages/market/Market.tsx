@@ -152,14 +152,14 @@ function AppModal({
             <p className="mkt-muted">Настраивать нечего. Приложение и так всё испортит.</p>
           )}
           <label className="mkt-field">
-            <span className="mkt-field__label">Ответственный за слив</span>
+            <span className="mkt-field__label">Безответственный за слив</span>
             <select
               className="select"
               value={owner}
               disabled={!app.installed}
               onChange={(e) => {
                 setOwner(e.target.value);
-                toast('Ответственный назначен. Он пока не в курсе');
+                toast('Безответственный назначен. Он пока не в курсе');
               }}
             >
               <option value="you">Вы (стажёр)</option>

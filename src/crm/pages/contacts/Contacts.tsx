@@ -215,7 +215,7 @@ export default function Contacts() {
                 <th>Email</th>
                 <th className="num">Звонил сам (раз)</th>
                 <th>Наш последний ответ</th>
-                <th>Ответственный</th>
+                <th>Безответственный</th>
               </tr>
             </thead>
             <tbody>
@@ -385,7 +385,7 @@ function AddModal({ open, kind, onClose }: { open: boolean; kind: 'contact' | 'c
             <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="client@example.ru" />
           </label>
         )}
-        <p className="lists-hint">Статус по умолчанию: «Хочет купить (опасно)». Ответственный: вы.</p>
+        <p className="lists-hint">Статус по умолчанию: «Хочет купить (опасно)». Безответственный: вы.</p>
         <button type="submit" hidden />
       </form>
     </Modal>

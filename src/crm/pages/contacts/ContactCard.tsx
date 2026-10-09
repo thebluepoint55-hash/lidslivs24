@@ -136,7 +136,7 @@ function EntityView({ demo, contact, company }: { demo: DemoState; contact?: Con
               {status}
             </span>
           </Field>
-          <Field label="Отв-ный">{managerName(demo, contact?.responsibleId ?? deals[0]?.responsibleId)}</Field>
+          <Field label="Безотв-ный">{managerName(demo, contact?.responsibleId ?? deals[0]?.responsibleId)}</Field>
         </dl>
 
         {isCompany && (

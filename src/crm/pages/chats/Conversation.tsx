@@ -6,6 +6,7 @@ import { toast } from '../../../store/ui';
 import { APP } from '../../../data/appIds';
 import { Button } from '../../ui';
 import { CHANNELS, ChannelAvatar, TEMPLATES, contactName, dayTitle, useTwoTicks } from './chatUtil';
+import { autoRepliesFor } from '../../appEffects';
 
 const time = (iso: string) => new Date(iso).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
 
@@ -60,6 +61,8 @@ export function Conversation({
   }
 
   const name = contactName(demo, thread);
+  // «Режим отпуска» и «Отговаривающий бот» отвечают клиенту за вас
+  const replies = autoRepliesFor(demo, thread);
   const deal = thread.dealId ? demo.deals.find((d) => d.id === thread.dealId) : undefined;
   const channel = CHANNELS[thread.channel] ?? CHANNELS.site;
 
@@ -128,6 +131,16 @@ export function Conversation({
                   </span>
                 </div>
               )}
+              {replies.get(m.id)?.map((r, k) => (
+                <div key={k} className="chats-msg chats-msg--out chats-msg--auto">
+                  <span className="chats-msg__author">{r.author}</span>
+                  <p className="chats-msg__text">{r.text}</p>
+                  <span className="chats-msg__meta tabular">
+                    {time(m.at)}
+                    <CheckCheck className="chats-msg__ticks" aria-label="Прочитано" />
+                  </span>
+                </div>
+              ))}
             </Fragment>
           );
         })}

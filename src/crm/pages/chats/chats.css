@@ -345,6 +345,14 @@
   border: 1px solid #c9def9;
   border-bottom-right-radius: 3px;
 }
+/* автоответы приложений: серые, чтобы было видно, что писал не человек */
+.chats-msg--auto {
+  background: var(--surface);
+  border: 1px dashed var(--line);
+}
+.chats-msg--auto .chats-msg__author {
+  color: var(--muted);
+}
 .chats-msg__author {
   display: block;
   margin-bottom: 1px;

@@ -137,7 +137,7 @@ function FilterButton({ filter, onChange }: { filter: StatsFilter; onChange: (f:
             </select>
           </label>
           <label className="field">
-            <span className="field__label">Ответственный</span>
+            <span className="field__label">Безответственный</span>
             <select className="select" value={filter.managerId} onChange={(e) => set({ managerId: e.target.value })}>
               <option value="all">Все сотрудники</option>
               {people(demo).map((p) => (

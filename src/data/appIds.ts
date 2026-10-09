@@ -7,4 +7,14 @@ export const APP = {
   unavailable: 'unavailable', // Телефония «Абонент недоступен» — входящие = «сброшен вежливо»
   twoTicks: 'two-ticks', // Мессенджер «Две галочки» — читает чаты и не отвечает
   invoice: 'invoice-beta', // Счёт на оплату (beta) — единственное, что выставляет счёт
+  kpSpam: 'kp-spam', // КП-в-спам — пятничное КП доставляется в спам
+  dissuadeBot: 'dissuade-bot', // Отговаривающий бот — отвечает клиентам в чатах
+  notOurClient: 'not-our-client', // Квалификатор — метка «Не наш клиент · 98%»
+  holidaysPlus: 'holidays-plus', // Календарь праздников РФ+ — переносы на мелкие праздники
+  smokeSync: 'smoke-sync', // Синхронизация с перекуром — задачи после перекура, таймер
+  vacation: 'vacation-mode', // Режим отпуска — автоответ в чатах
+  questForm: 'quest-form', // Форма заявки «Квест» — новые лиды застряли на шаге N из 47
+  reverseReviews: 'reverse-reviews', // Отзывы наоборот — шлёт клиенту плохие отзывы
+  competitor: 'competitor-integration', // Интеграция с конкурентом — горячие лиды уходят конкуренту
+  solvency: 'solvency-detector', // Детектор платёжеспособности — сирена на готовых платить
 } as const;

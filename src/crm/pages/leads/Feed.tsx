@@ -132,6 +132,8 @@ export function FeedView({ items, emptyText = 'Событий нет. Клиен
 }
 
 function FeedEntry({ it, author }: { it: FeedItem; author: string }) {
+  // «Абонент недоступен» вежливо сбрасывает все входящие — и в ленте тоже
+  const unavailable = useStore((s) => (s.demo ? isInstalled(s.demo, APP.unavailable) : false));
   if (LINE_KINDS.has(it.kind)) {
     const Icon = it.kind === 'robot' ? Bot : it.kind === 'task' ? CircleCheck : null;
     return (
@@ -151,7 +153,7 @@ function FeedEntry({ it, author }: { it: FeedItem; author: string }) {
 
   if (it.kind === 'call') {
     const dir = meta.direction === 'out' ? 'out' : 'in';
-    const status = String(meta.status ?? 'missed');
+    const status = dir === 'in' && unavailable ? 'dropped' : String(meta.status ?? 'missed');
     icon = status === 'missed' ? <PhoneMissed aria-hidden="true" /> : dir === 'out' ? <PhoneOutgoing aria-hidden="true" /> : <PhoneIncoming aria-hidden="true" />;
     label = dir === 'out' ? 'Исходящий звонок' : 'Входящий звонок';
     extra = (
