@@ -1,0 +1,134 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          "src/data/apps.ts"
+        ],
+        "createdAt": "2026-10-09T18:19:02.592Z",
+        "reason": "Claude decided: logo-tile colors of fictional СливМаркет apps are content (like third-party logos in amoМаркет), not UI chrome"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "9px",
+        "files": [
+          "src/crm/layout/layout.css"
+        ],
+        "createdAt": "2026-10-09T18:19:02.880Z",
+        "reason": "Claude decided: red counter badge is a pill (radius = height/2), copied from amoCRM sidebar badges"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "10px",
+        "files": [
+          "src/crm/layout/layout.css"
+        ],
+        "createdAt": "2026-10-09T18:19:03.227Z",
+        "reason": "Claude decided: badge numerals 10px, copied from amoCRM counter badges"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#fff7e0",
+        "files": [
+          "src/crm/layout/layout.css"
+        ],
+        "createdAt": "2026-10-09T18:19:03.547Z",
+        "reason": "Claude decided: demo-access notice banner (warning tone), intentional one-off element outside the amo clone"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#f1e1b0",
+        "files": [
+          "src/crm/layout/layout.css"
+        ],
+        "createdAt": "2026-10-09T18:19:03.861Z",
+        "reason": "Claude decided: demo-access notice banner (warning tone), intentional one-off element outside the amo clone"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#7a5b12",
+        "files": [
+          "src/crm/layout/layout.css"
+        ],
+        "createdAt": "2026-10-09T18:19:04.183Z",
+        "reason": "Claude decided: demo-access notice banner (warning tone), intentional one-off element outside the amo clone"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#8a5a00",
+        "files": [
+          "src/crm/layout/layout.css"
+        ],
+        "createdAt": "2026-10-09T18:19:04.498Z",
+        "reason": "Claude decided: demo-access notice banner (warning tone), intentional one-off element outside the amo clone"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "22px",
+        "files": [
+          "src/crm/layout/layout.css"
+        ],
+        "createdAt": "2026-10-09T18:19:04.797Z",
+        "reason": "Claude decided: Отмаз FAB is a pill (radius = height/2)"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#1a3d63",
+        "files": [
+          "src/crm/layout/layout.css"
+        ],
+        "createdAt": "2026-10-09T18:19:05.294Z",
+        "reason": "Claude decided: hover shade of the navy Отмаз FAB"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#ffb39f",
+        "files": [
+          "src/crm/layout/layout.css"
+        ],
+        "createdAt": "2026-10-09T18:19:05.611Z",
+        "reason": "Claude decided: soft coral tint used on dark navy (FAB icon, logo accent); one-off accent on dark"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#8a949b",
+        "files": [
+          "src/crm/layout/layout.css"
+        ],
+        "createdAt": "2026-10-09T18:19:05.913Z",
+        "reason": "Claude decided: inactive mobile tab-bar grey, copied from amoCRM mobile app"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "34px",
+        "files": [
+          "src/crm/entry.css"
+        ],
+        "createdAt": "2026-10-09T18:19:06.244Z",
+        "reason": "Claude decided: wordmark size on the one-off demo entry screen"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#ffb39f",
+        "files": [
+          "src/crm/entry.css"
+        ],
+        "createdAt": "2026-10-09T18:19:06.560Z",
+        "reason": "Claude decided: soft coral wordmark accent on the navy entry screen"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "2px",
+        "files": [
+          "src/crm/entry.css"
+        ],
+        "createdAt": "2026-10-09T18:19:06.875Z",
+        "reason": "Claude decided: 4px-tall progress bar on the entry screen, radius = height/2"
+      }
+    ]
+  }
+}

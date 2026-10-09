@@ -1,0 +1,618 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-09T18:16:14.438Z",
+  "title": "Design System: ЛидСливс24",
+  "extensions": {
+    "colorMeta": {
+      "sidebar-navy": {
+        "role": "primary",
+        "displayName": "Ledger Navy",
+        "canonical": "#13304f",
+        "tonalRamp": [
+          "#060e18",
+          "#0a1828",
+          "#0d2237",
+          "#112a46",
+          "#13304f",
+          "#66788d",
+          "#acb7c1",
+          "#e3e6ea"
+        ]
+      },
+      "sidebar-navy-top": {
+        "role": "primary",
+        "displayName": "Rail Head Navy",
+        "canonical": "#0f2742"
+      },
+      "sidebar-text": {
+        "role": "neutral",
+        "displayName": "Rail Text",
+        "canonical": "#9fb3c8"
+      },
+      "action-blue": {
+        "role": "primary",
+        "displayName": "Ordinary Action Blue",
+        "canonical": "#2f80ed",
+        "tonalRamp": [
+          "#0e2647",
+          "#184077",
+          "#215aa6",
+          "#2971d1",
+          "#2f80ed",
+          "#78acf3",
+          "#b6d3f9",
+          "#e6f0fd"
+        ]
+      },
+      "action-blue-hover": {
+        "role": "primary",
+        "displayName": "Ordinary Action Blue (hover)",
+        "canonical": "#1f6fdc"
+      },
+      "action-blue-border": {
+        "role": "primary",
+        "displayName": "Ordinary Action Blue (edge)",
+        "canonical": "#2268c9"
+      },
+      "link-blue": {
+        "role": "primary",
+        "displayName": "Deal Link Blue",
+        "canonical": "#0057a9",
+        "tonalRamp": [
+          "#001a33",
+          "#002c55",
+          "#003d76",
+          "#004d95",
+          "#0057a9",
+          "#5992c7",
+          "#a6c4e1",
+          "#e0ebf5"
+        ]
+      },
+      "anti-coral": {
+        "role": "secondary",
+        "displayName": "Anti Coral",
+        "canonical": "#ff5b36",
+        "tonalRamp": [
+          "#4d1b10",
+          "#802e1b",
+          "#b34026",
+          "#e05030",
+          "#ff5b36",
+          "#ff947c",
+          "#ffc6b9",
+          "#ffebe7"
+        ]
+      },
+      "anti-coral-hover": {
+        "role": "secondary",
+        "displayName": "Anti Coral (hover)",
+        "canonical": "#f04a24"
+      },
+      "anti-coral-soft": {
+        "role": "secondary",
+        "displayName": "Anti Coral Soft",
+        "canonical": "#fff0eb"
+      },
+      "success-green": {
+        "role": "tertiary",
+        "displayName": "Success Green",
+        "canonical": "#27ae60",
+        "tonalRamp": [
+          "#0c341d",
+          "#145730",
+          "#1b7a43",
+          "#229954",
+          "#27ae60",
+          "#73ca98",
+          "#b3e3c7",
+          "#e5f5ec"
+        ]
+      },
+      "success-soft": {
+        "role": "tertiary",
+        "displayName": "Success Soft",
+        "canonical": "#e6f6ec"
+      },
+      "danger-red": {
+        "role": "tertiary",
+        "displayName": "Danger Red",
+        "canonical": "#e2574c",
+        "tonalRamp": [
+          "#441a17",
+          "#712c26",
+          "#9e3d35",
+          "#c74d43",
+          "#e2574c",
+          "#ec928b",
+          "#f5c4c0",
+          "#fcebea"
+        ]
+      },
+      "danger-soft": {
+        "role": "tertiary",
+        "displayName": "Danger Soft",
+        "canonical": "#fdecea"
+      },
+      "warning-amber": {
+        "role": "tertiary",
+        "displayName": "Warning Amber",
+        "canonical": "#e4b248",
+        "tonalRamp": [
+          "#443516",
+          "#725924",
+          "#a07d32",
+          "#c99d3f",
+          "#e4b248",
+          "#edcd88",
+          "#f6e4bf",
+          "#fcf6e9"
+        ]
+      },
+      "market-lime": {
+        "role": "tertiary",
+        "displayName": "Installed Lime",
+        "canonical": "#d7f56b"
+      },
+      "ink-text": {
+        "role": "neutral",
+        "displayName": "Office Ink",
+        "canonical": "#363b44",
+        "tonalRamp": [
+          "#101214",
+          "#1b1e22",
+          "#262930",
+          "#30343c",
+          "#363b44",
+          "#7c8085",
+          "#b9babe",
+          "#e7e7e9"
+        ]
+      },
+      "muted-grey": {
+        "role": "neutral",
+        "displayName": "Muted Grey",
+        "canonical": "#92989b",
+        "tonalRamp": [
+          "#2c2e2f",
+          "#494c4e",
+          "#666a6d",
+          "#808688",
+          "#92989b",
+          "#b8bcbe",
+          "#d9dbdc",
+          "#f2f3f3"
+        ]
+      },
+      "stage-title-grey": {
+        "role": "neutral",
+        "displayName": "Stage Title Grey",
+        "canonical": "#6b6d72"
+      },
+      "line-grey": {
+        "role": "neutral",
+        "displayName": "Line Grey",
+        "canonical": "#c5c5c5"
+      },
+      "line-soft": {
+        "role": "neutral",
+        "displayName": "Soft Line",
+        "canonical": "#e8eaeb"
+      },
+      "input-border": {
+        "role": "neutral",
+        "displayName": "Input Edge",
+        "canonical": "#d7dadc"
+      },
+      "workspace-grey": {
+        "role": "neutral",
+        "displayName": "Workspace Grey",
+        "canonical": "#f5f5f5",
+        "tonalRamp": [
+          "#4a4a4a",
+          "#7b7b7b",
+          "#acacac",
+          "#d8d8d8",
+          "#f5f5f5",
+          "#f9f9f9",
+          "#fcfcfc",
+          "#fefefe"
+        ]
+      },
+      "surface-white": {
+        "role": "neutral",
+        "displayName": "Surface White",
+        "canonical": "#ffffff"
+      },
+      "widgets-grey": {
+        "role": "neutral",
+        "displayName": "Widgets Grey",
+        "canonical": "#e4e4e4"
+      },
+      "row-hover": {
+        "role": "neutral",
+        "displayName": "Row Hover",
+        "canonical": "#f2f7fd"
+      },
+      "toast-navy": {
+        "role": "neutral",
+        "displayName": "Toast Navy",
+        "canonical": "#23384c"
+      },
+      "landing-sky": {
+        "role": "tertiary",
+        "displayName": "Landing Sky",
+        "canonical": "#1d6fb8",
+        "tonalRamp": [
+          "#092137",
+          "#0f385c",
+          "#144e81",
+          "#1a62a2",
+          "#1d6fb8",
+          "#6ca1d1",
+          "#b0cde6",
+          "#e4eef6"
+        ]
+      },
+      "landing-sky-deep": {
+        "role": "tertiary",
+        "displayName": "Landing Sky Deep",
+        "canonical": "#175c9b"
+      },
+      "landing-coral-hi": {
+        "role": "secondary",
+        "displayName": "Landing Coral Hover",
+        "canonical": "#ff7452"
+      },
+      "landing-ink": {
+        "role": "neutral",
+        "displayName": "Deep Ink",
+        "canonical": "#0e2238",
+        "tonalRamp": [
+          "#040a11",
+          "#07111c",
+          "#0a1827",
+          "#0c1e31",
+          "#0e2238",
+          "#626f7e",
+          "#abb2b9",
+          "#e2e4e7"
+        ]
+      },
+      "landing-paper": {
+        "role": "neutral",
+        "displayName": "Cool Paper",
+        "canonical": "#f2f5f8",
+        "tonalRamp": [
+          "#494a4a",
+          "#797b7c",
+          "#a9acae",
+          "#d5d8da",
+          "#f2f5f8",
+          "#f7f9fa",
+          "#fafcfd",
+          "#fdfefe"
+        ]
+      },
+      "landing-muted": {
+        "role": "neutral",
+        "displayName": "Landing Muted",
+        "canonical": "#5b636e"
+      },
+      "landing-line": {
+        "role": "neutral",
+        "displayName": "Landing Line",
+        "canonical": "#dde3e9"
+      },
+      "landing-on-navy-soft": {
+        "role": "neutral",
+        "displayName": "On-Navy Soft",
+        "canonical": "#c3d3e4"
+      }
+    },
+    "typographyMeta": {
+      "crm-title": {
+        "displayName": "CRM Title",
+        "purpose": "Modal titles, empty-state titles."
+      },
+      "crm-section-header": {
+        "displayName": "CRM Section Header",
+        "purpose": "Uppercase section name in the 64px page header."
+      },
+      "crm-body": {
+        "displayName": "CRM Body",
+        "purpose": "Base text, inputs, table cells, menu items, deal titles."
+      },
+      "crm-body-sm": {
+        "displayName": "CRM Body Small",
+        "purpose": "Card meta, field labels, column meta, demo bar."
+      },
+      "crm-label-caps": {
+        "displayName": "CRM Label Caps",
+        "purpose": "Buttons, column names, vertical labels; uppercase."
+      },
+      "crm-table-head": {
+        "displayName": "CRM Table Head",
+        "purpose": "Uppercase amo-style table headers."
+      },
+      "landing-display": {
+        "displayName": "Landing Display",
+        "purpose": "Landing hero line only; uppercase."
+      },
+      "landing-headline": {
+        "displayName": "Landing Headline",
+        "purpose": "Landing section headings; uppercase, max 18ch."
+      },
+      "landing-lead": {
+        "displayName": "Landing Lead",
+        "purpose": "Section intros and hero offer."
+      },
+      "landing-body": {
+        "displayName": "Landing Body",
+        "purpose": "Landing running text."
+      }
+    },
+    "shadows": [
+      {
+        "name": "pop",
+        "value": "0 6px 24px rgba(19, 48, 79, 0.16), 0 1px 4px rgba(19, 48, 79, 0.1)",
+        "purpose": "Menus, modals, toasts."
+      },
+      {
+        "name": "drag",
+        "value": "0 10px 28px rgba(19, 48, 79, 0.22)",
+        "purpose": "Lifted deal card following the cursor."
+      },
+      {
+        "name": "card-hover",
+        "value": "0 2px 6px rgba(19, 48, 79, 0.1)",
+        "purpose": "Deal card on pointer hover."
+      },
+      {
+        "name": "quick-form",
+        "value": "0 2px 10px rgba(19, 48, 79, 0.08)",
+        "purpose": "Inline add forms in kanban columns."
+      },
+      {
+        "name": "focus-halo",
+        "value": "0 0 0 3px rgba(47, 128, 237, 0.15)",
+        "purpose": "Focused inputs."
+      },
+      {
+        "name": "anti-glow",
+        "value": "0 2px 8px rgba(255, 91, 54, 0.28)",
+        "purpose": "Coral anti button only."
+      },
+      {
+        "name": "fab",
+        "value": "0 6px 18px rgba(19, 48, 79, 0.35)",
+        "purpose": "«Отмаз» floating button."
+      },
+      {
+        "name": "landing-showcase",
+        "value": "0 28px 60px -24px rgba(6, 24, 46, 0.6), 0 2px 6px rgba(6, 24, 46, 0.18)",
+        "purpose": "Landing mini-pipeline and showcase objects."
+      },
+      {
+        "name": "landing-cta",
+        "value": "0 8px 20px -8px rgba(14, 34, 56, 0.55)",
+        "purpose": "Landing coral CTA at rest; deepens to 0 12px 24px -10px rgba(14,34,56,0.6) on hover."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "All state transitions and entrances in both surfaces."
+      },
+      {
+        "name": "dur",
+        "value": "180ms",
+        "purpose": "Default state transition duration."
+      },
+      {
+        "name": "menu-in",
+        "value": "140ms, translateY(-4px) + fade",
+        "purpose": "Dropdown menus."
+      },
+      {
+        "name": "modal-in",
+        "value": "220ms, translateY(-10px) scale(0.98) + fade",
+        "purpose": "Desktop modals."
+      },
+      {
+        "name": "sheet-in",
+        "value": "260ms, translateY(100%)",
+        "purpose": "Mobile bottom sheets."
+      },
+      {
+        "name": "toast-in",
+        "value": "260ms, translateY(10px) + fade",
+        "purpose": "Toasts."
+      },
+      {
+        "name": "board-lift",
+        "value": "160ms, rotate(0) to 2deg with drag shadow",
+        "purpose": "Card pickup in drag-and-drop."
+      },
+      {
+        "name": "card-land",
+        "value": "800ms, #fff5d1 flash fading out",
+        "purpose": "Card just dropped into a column."
+      },
+      {
+        "name": "ld-strike",
+        "value": "520ms delay 380ms, scaleX(0) to 1 at -14deg",
+        "purpose": "Coral strike through «НЕ» in the landing hero."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "durations forced to 1ms",
+        "purpose": "prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "crm-mobile",
+        "value": "max-width: 767px"
+      },
+      {
+        "name": "landing-sm",
+        "value": "min-width: 600px"
+      },
+      {
+        "name": "landing-sticky-cta",
+        "value": "max-width: 719px"
+      },
+      {
+        "name": "landing-md",
+        "value": "min-width: 760px"
+      },
+      {
+        "name": "landing-lg",
+        "value": "min-width: 900px"
+      },
+      {
+        "name": "landing-xl",
+        "value": "min-width: 1100px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Default Button",
+      "kind": "button",
+      "refersTo": "button-default",
+      "description": "Neutral amo button: white, hairline, caption caps.",
+      "html": "<button class=\"ds-btn\">Настроить</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:38px;padding:0 14px;border-radius:4px;border:1px solid #e8eaeb;background:#fff;color:#363b44;font-family:'PT Sans Caption','PT Sans',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;white-space:nowrap;cursor:pointer;transition:background 180ms cubic-bezier(0.22,1,0.36,1),border-color 180ms cubic-bezier(0.22,1,0.36,1),transform 90ms;}.ds-btn:hover{border-color:#cfd3d6;background:#fafafa;}.ds-btn:active{transform:translateY(1px);}.ds-btn:focus-visible{outline:2px solid #2f80ed;outline-offset:2px;}"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The normal, legitimate action in blue.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Сохранить</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:38px;padding:0 14px;border-radius:4px;border:1px solid #e8eaeb;background:#fff;color:#363b44;font-family:'PT Sans Caption','PT Sans',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;white-space:nowrap;cursor:pointer;transition:background 180ms cubic-bezier(0.22,1,0.36,1),border-color 180ms cubic-bezier(0.22,1,0.36,1),transform 90ms;}.ds-btn:hover{border-color:#cfd3d6;background:#fafafa;}.ds-btn:active{transform:translateY(1px);}.ds-btn:focus-visible{outline:2px solid #2f80ed;outline-offset:2px;}.ds-btn-primary{background:#2f80ed;border-color:#2268c9;color:#f5f5f5;}.ds-btn-primary:hover{background:#1f6fdc;border-color:#2268c9;}"
+    },
+    {
+      "name": "Anti Button",
+      "kind": "button",
+      "refersTo": "button-anti",
+      "description": "The coral anti-sale action; at most one per screen.",
+      "html": "<button class=\"ds-btn ds-btn-anti\">Слить сделку</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:38px;padding:0 14px;border-radius:4px;border:1px solid #e8eaeb;background:#fff;color:#363b44;font-family:'PT Sans Caption','PT Sans',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;white-space:nowrap;cursor:pointer;transition:background 180ms cubic-bezier(0.22,1,0.36,1),border-color 180ms cubic-bezier(0.22,1,0.36,1),transform 90ms;}.ds-btn:hover{border-color:#cfd3d6;background:#fafafa;}.ds-btn:active{transform:translateY(1px);}.ds-btn:focus-visible{outline:2px solid #2f80ed;outline-offset:2px;}.ds-btn-anti{background:#ff5b36;border-color:#e04a27;color:#fff;box-shadow:0 2px 8px rgba(255,91,54,0.28);}.ds-btn-anti:hover{background:#f04a24;border-color:#d43f1d;}"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "36px amo field with blue focus halo.",
+      "html": "<input class=\"ds-input\" placeholder=\"Название сделки\">",
+      "css": ".ds-input{width:260px;height:36px;padding:0 10px;border:1px solid #d7dadc;border-radius:4px;background:#fff;font:15px 'PT Sans',Arial,sans-serif;color:#363b44;caret-color:#2f80ed;transition:border-color 180ms;}.ds-input::placeholder{color:#9aa1a5;}.ds-input:hover{border-color:#bfc4c7;}.ds-input:focus{outline:none;border-color:#2f80ed;box-shadow:0 0 0 3px rgba(47,128,237,0.15);}"
+    },
+    {
+      "name": "Sidebar Rail",
+      "kind": "nav",
+      "refersTo": "sidebar",
+      "description": "65px navy rail with icon-over-label items.",
+      "html": "<nav class=\"ds-rail\"><a class=\"ds-nav ds-nav-active\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><rect x=\"3\" y=\"4\" width=\"5\" height=\"16\"/><rect x=\"10\" y=\"4\" width=\"5\" height=\"11\"/><rect x=\"17\" y=\"4\" width=\"4\" height=\"7\"/></svg>Сделки</a><a class=\"ds-nav\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\"><path d=\"M9 11l3 3 8-8\"/><path d=\"M20 12v7a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h11\"/></svg>Задачи<span class=\"ds-badge\">3</span></a></nav>",
+      "css": ".ds-rail{width:65px;background:#13304f;color:#9fb3c8;display:flex;flex-direction:column;}.ds-nav{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 2px 10px;color:#9fb3c8;font:11px/1.1 'PT Sans',Arial,sans-serif;text-decoration:none;transition:color 180ms,background 180ms;}.ds-nav:hover{color:#fff;background:rgba(255,255,255,0.06);}.ds-nav:focus-visible{outline:2px solid #2f80ed;outline-offset:-2px;}.ds-nav-active{color:#fff;font-weight:700;background:rgba(255,255,255,0.07);}.ds-badge{position:absolute;top:6px;left:50%;margin-left:6px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#e2574c;color:#fff;font-size:10px;font-weight:700;line-height:17px;text-align:center;}"
+    },
+    {
+      "name": "Tags",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Small 3px-radius tags; hot variant in coral soft.",
+      "html": "<span class=\"ds-tag\">Холодный</span> <span class=\"ds-tag ds-tag-hot\">Горячий, остудить</span>",
+      "css": ".ds-tag{display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:3px;background:#e9eef3;color:#50606b;font:12px 'PT Sans',Arial,sans-serif;white-space:nowrap;}.ds-tag-hot{background:#fff0eb;color:#b8381a;}"
+    },
+    {
+      "name": "Kanban Column with Deal Card",
+      "kind": "card",
+      "refersTo": "deal-card",
+      "description": "Caps column head with 2px stage line over an amo deal card.",
+      "html": "<div class=\"ds-col\"><div class=\"ds-col-head\"><h3 class=\"ds-col-name\">Клиент думает</h3><div class=\"ds-col-meta\">3 сделки: 240 000 ₽</div><span class=\"ds-col-line\"></span></div><article class=\"ds-card\" tabindex=\"0\"><div class=\"ds-card-top\"><span>Пётр, ООО «Ромашка»</span><span class=\"ds-card-date\">Сегодня</span></div><a class=\"ds-card-title\" href=\"#\">Хотел купить 40 лицензий</a><div class=\"ds-card-bottom\">Задач нет</div></article></div>",
+      "css": ".ds-col{width:290px;background:#f5f5f5;padding:0 0 12px;font-family:'PT Sans',Arial,sans-serif;}.ds-col-head{padding:18px 8px 10px;text-align:center;}.ds-col-name{margin:0;font-family:'PT Sans Caption','PT Sans',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#6b6d72;}.ds-col-meta{margin-top:3px;font-size:13px;color:#92989b;}.ds-col-line{display:block;height:2px;margin-top:10px;background:#f3beff;}.ds-card{padding:6px 8px 7px;background:#fff;border:1px solid #c5c5c5;border-radius:4px;color:#363b44;cursor:pointer;transition:border-color 160ms cubic-bezier(0.22,1,0.36,1),box-shadow 160ms cubic-bezier(0.22,1,0.36,1);}.ds-card:hover,.ds-card:focus-visible{border-color:#a7aeb3;box-shadow:0 2px 6px rgba(19,48,79,0.1);outline:none;}.ds-card-top{display:flex;gap:8px;font-size:13px;line-height:18px;}.ds-card-top span:first-child{flex:1;}.ds-card-date{color:#92989b;}.ds-card-title{display:block;margin-top:2px;font-size:15px;line-height:20px;color:#0057a9;text-decoration:none;}.ds-card-title:hover{text-decoration:underline;text-underline-offset:2px;}.ds-card-bottom{margin-top:6px;font-size:13px;color:#6b6d72;}"
+    },
+    {
+      "name": "Section Header",
+      "kind": "nav",
+      "refersTo": "page-header",
+      "description": "64px white amo section header with caps title and divided search.",
+      "html": "<header class=\"ds-head\"><span class=\"ds-head-title\">Сделки</span><label class=\"ds-head-search\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M20 20l-4-4\"/></svg><input placeholder=\"Поиск и фильтр\"></label><span class=\"ds-head-meta\">24 сделки</span></header>",
+      "css": ".ds-head{display:flex;align-items:center;gap:14px;min-height:64px;padding:0 24px;background:#fff;border-bottom:1px solid #e8eaeb;font-family:'PT Sans',Arial,sans-serif;}.ds-head-title{font-family:'PT Sans Caption','PT Sans',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#363b44;}.ds-head-search{flex:1;display:flex;align-items:center;gap:8px;align-self:stretch;padding-left:16px;border-left:1px solid #e8eaeb;color:#92989b;}.ds-head-search input{border:0;outline:0;background:transparent;width:100%;font:15px 'PT Sans',Arial,sans-serif;color:#363b44;}.ds-head-search:focus-within{color:#2f80ed;}.ds-head-meta{color:#92989b;font-size:15px;}"
+    },
+    {
+      "name": "Landing Coral CTA",
+      "kind": "button",
+      "refersTo": "landing-button-coral",
+      "description": "Landing-only condensed caps CTA on coral with ink text.",
+      "html": "<a class=\"ds-ld-cta\" href=\"#\">Слить первого лида <svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></a>",
+      "css": ".ds-ld-cta{display:inline-flex;align-items:center;gap:10px;min-height:56px;padding:0 26px;border:2px solid transparent;border-radius:4px;background:#ff5b36;color:#0e2238;font-family:'Sofia Sans Extra Condensed','PT Sans',Arial,sans-serif;font-weight:800;font-size:24px;line-height:1;letter-spacing:0.02em;text-transform:uppercase;text-decoration:none;box-shadow:0 8px 20px -8px rgba(14,34,56,0.55);transition:background-color 180ms cubic-bezier(0.22,1,0.36,1),transform 180ms cubic-bezier(0.22,1,0.36,1),box-shadow 180ms cubic-bezier(0.22,1,0.36,1);}.ds-ld-cta svg{transition:transform 180ms cubic-bezier(0.22,1,0.36,1);}.ds-ld-cta:hover{background:#ff7452;transform:translateY(-1px);box-shadow:0 12px 24px -10px rgba(14,34,56,0.6);}.ds-ld-cta:hover svg{transform:translateX(3px);}.ds-ld-cta:active{transform:translateY(1px);}.ds-ld-cta:focus-visible{outline:3px solid #1d6fb8;outline-offset:3px;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Stone-Faced Back Office",
+    "overview": "ЛидСливс24 is a parody that only works if nobody blinks. The CRM is a faithful, dense, working amoCRM clone: a 65px navy rail, 64px white section headers, a grey workspace, caps-labelled kanban columns with 2px stage lines, three-column deal cards, amo analytics and a marketplace. Nothing in the chrome is a joke. The joke lives in copy, data and inverted logic, and in exactly one visual deviation: the coral «anti» action that leads away from the sale and is therefore the loudest thing on screen.\n\nThe system has two registers that share one palette. The **CRM** (primary, Operate mode) is quiet, grey, small-type and information-dense, measured off amoCRM. The **landing** (sub-system, Persuade mode, classes prefixed `ld-`) is a straight-faced SaaS page: a saturated sky-blue field owns the first screen and the finale, white and cool paper alternate between, navy carries dense blocks, and coral is reserved for buttons and the moments where a lead gets «слит». Its headlines switch to a condensed 800/900 caps face; its body stays PT Sans; its demonstrations are rebuilt CRM components (feed notes, list table, market tiles, incident card), so the landing visibly belongs to the product.\n\nDensity is amo density: 13–15px text, 38px controls, 6px between cards, 12px between columns. Depth is soft and navy-tinted, used for things that float (menus, modals, toasts, the dragged card), never for resting surfaces.",
+    "keyCharacteristics": [
+      "Pixel-faithful amoCRM chrome; humour carried by words, not by styling.",
+      "One coral anti-action per screen; blue is the normal, legitimate action.",
+      "PT Sans everywhere in the CRM, PT Sans Caption bold caps for section headers, column names, buttons and table heads.",
+      "Flat bordered surfaces at rest; navy-tinted shadows only on floating layers.",
+      "Mobile follows the amo app: bottom tab bar, one stage per screen, bottom sheets.",
+      "Landing shares the palette but speaks louder: sky field, condensed caps display, CRM components as proof."
+    ],
+    "rules": [
+      {
+        "name": "The One Coral Rule",
+        "body": "The coral anti-action appears at most once per CRM screen. Everything that leads away from a sale is the most visible thing; there is only ever one of it.",
+        "section": "colors"
+      },
+      {
+        "name": "The Legitimate Blue Rule",
+        "body": "Blue means the normal, amo-standard action (save, add, primary). Never paint an anti-action blue or a normal action coral; the inversion depends on the two never trading places.",
+        "section": "colors"
+      },
+      {
+        "name": "The Stages Are Data Rule",
+        "body": "Pastel stage colours appear only where a stage is represented (column line, chip, drag-over tint, stage picker). They never become button, text or background colours elsewhere.",
+        "section": "colors"
+      },
+      {
+        "name": "The Caption Caps Rule",
+        "body": "Structural labels in the CRM (section header, column names, buttons, table heads) are PT Sans Caption bold uppercase with 0.5–1px tracking. Running text is never set in caps.",
+        "section": "typography"
+      },
+      {
+        "name": "The Condensed Face Stays Home Rule",
+        "body": "Sofia Sans Extra Condensed belongs to the landing's headings, buttons and logo. It never enters the CRM.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Until It Floats Rule",
+        "body": "Cards, columns, tables and headers carry a 1px border and no shadow at rest. A shadow means the element is above the page: open, hovered, dragged or floating.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** measure new CRM screens against amoCRM: 65px rail, 64px header, 38px buttons, 290px columns, 6px card gaps, PT Sans 15px body.",
+      "**Do** keep structural labels in PT Sans Caption bold caps (11–14px, 0.5–1px tracking).",
+      "**Do** use action blue for every normal action and keep coral to one anti-action per screen.",
+      "**Do** keep resting surfaces flat with 1px hairlines; add the navy-tinted pop shadow only to menus, modals, toasts and the dragged card.",
+      "**Do** carry stage identity through the 2px stage line, stage chips and drag-over tints only.",
+      "**Do** switch to bottom sheets, a bottom tab bar and one stage per screen below 768px.",
+      "**Do** set ink (#0e2238) text on landing coral, and white on landing sky and navy.",
+      "**Do** build landing proof sections out of real CRM components, so the landing looks like the product."
+    ],
+    "donts": [
+      "**Don't** put the joke in the styling: no novelty colours, wobbly shapes or meme typography in the CRM; humour lives in copy and data.",
+      "**Don't** use the amoCRM logo or name anywhere in the product.",
+      "**Don't** use Sofia Sans Extra Condensed or the landing sky blue inside the CRM.",
+      "**Don't** place two coral anti-actions on one CRM screen.",
+      "**Don't** use neutral black shadows or shadows on resting cards, columns and tables.",
+      "**Don't** use stage pastels as general-purpose UI colours.",
+      "**Don't** round CRM controls beyond 4px; larger radii belong to switches, counters, landing panels and mobile sheets."
+    ]
+  }
+}

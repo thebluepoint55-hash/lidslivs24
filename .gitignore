@@ -9,5 +9,6 @@ dist/
 # Локальные материалы (не публикуются)
 docs/03-конспект-курса-лендинг.md
 
-# Служебное
-.impeccable/
+# Служебное: скриншоты ревью и локальные настройки скилла impeccable
+.impeccable/review/
+.impeccable/config.local.json
